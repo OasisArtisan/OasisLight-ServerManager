@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,6 +25,8 @@ public class InputBuffer {
     private List<List<String>> input;
     private Scanner sc;
     private Thread thread;
+    private Object enterKeyLock = new Object();
+    private boolean waitingForEnter = false;
 
     public InputBuffer(InputStream is) {
         input = Collections.synchronizedList(new ArrayList());
@@ -30,40 +34,45 @@ public class InputBuffer {
         InputBuffer ib = this;
         thread = new Thread() {
             public void run() {
-                Printer.printBackgroundInfo("InputBuffer", "Starting thread");
-                Scanner sc = new Scanner(System.in);
-
                 try {
-                    while (sc.hasNextLine()) {
-                        String s = sc.nextLine().trim();
-                        if (!s.isEmpty()) {
-                            List<String> list = Collections.synchronizedList(new ArrayList());
-                            StringTokenizer st = new StringTokenizer(s);
-                            while (st.hasMoreTokens()) {
-                                String t = st.nextToken();
-                                if (t.equals("quit") || t.equals("exit")) {
-                                    sc.close();
-                                    System.exit(0);
-                                } else if (t.equals("clear") || t.equals("clr")) {
-                                    String menu = Main.getActiveMenu();
-                                    Storage.getSettings().getProcessHandler().clearConsole();
-                                    if (menu != null) {
-                                        Printer.printTitle(menu);
-                                    }
-                                } else {
-                                    list.add(t);
+                    Printer.printBackgroundInfo("InputBuffer", "Starting thread");
+                    Scanner sc = new Scanner(System.in);
+
+                    try {
+                        while (sc.hasNextLine()) {
+                            String s = sc.nextLine().trim();
+                            if (waitingForEnter) {
+                                synchronized (enterKeyLock) {
+                                    enterKeyLock.notifyAll();
                                 }
-                            }
-                            if (list.size() > 0) {
-                                input.add(list);
-                                synchronized (ib) {
-                                    ib.notifyAll();
+                                waitingForEnter = false;
+                            } else if (!s.isEmpty()) {
+                                List<String> list = Collections.synchronizedList(new ArrayList());
+                                StringTokenizer st = new StringTokenizer(s);
+                                while (st.hasMoreTokens()) {
+                                    String t = st.nextToken();
+                                    if (t.equals("quit") || t.equals("exit")) {
+                                        sc.close();
+                                        System.exit(0);
+                                    } else if (t.equals("clear") || t.equals("clr")) {
+                                        Main.printMenu(Main.getActiveMenu().getK(), Main.getActiveMenu().getV());
+                                    } else {
+                                        list.add(t);
+                                    }
+                                }
+                                if (list.size() > 0) {
+                                    input.add(list);
+                                    synchronized (ib) {
+                                        ib.notifyAll();
+                                    }
                                 }
                             }
                         }
+                    } catch (IllegalStateException e) {
+                        Printer.printBackgroundInfo("InputBuffer", "Stopping thread and closing input stream");
                     }
-                } catch (IllegalStateException e) {
-                    Printer.printBackgroundInfo("InputBuffer", "Stopping thread and closing input stream");
+                } catch (Exception e) {
+                    Printer.printError("InputBuffer", "An unexpected error occured.", e);
                 }
             }
         };
@@ -86,7 +95,7 @@ public class InputBuffer {
         return !input.isEmpty() && !input.get(0).isEmpty();
     }
 
-    public synchronized String next(){
+    public synchronized String next() {
         try {
             if (!hasNext()) {
                 this.wait();
@@ -117,6 +126,16 @@ public class InputBuffer {
         }
         input.remove(0);
         return next.trim();
+    }
+
+    public void waitForEnter() {
+        waitingForEnter = true;
+        synchronized (enterKeyLock) {
+            try {
+                enterKeyLock.wait();
+            } catch (InterruptedException ex) {
+            }
+        }
     }
 
     public synchronized void clear() {

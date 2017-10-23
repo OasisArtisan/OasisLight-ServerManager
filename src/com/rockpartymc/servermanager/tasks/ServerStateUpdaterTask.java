@@ -1,5 +1,6 @@
 package com.rockpartymc.servermanager.tasks;
 
+import com.rockpartymc.servermanager.Main;
 import com.rockpartymc.servermanager.consolecommunication.Printer;
 import com.rockpartymc.servermanager.objects.Server;
 import com.rockpartymc.servermanager.objects.ServerState;
@@ -31,11 +32,12 @@ public class ServerStateUpdaterTask extends Thread {
             }
             interval = Storage.getSettings().getServerStateUpdaterTaskInterval();
             Printer.printBackgroundInfo(pName, "Starting thread with interval \"" + interval + " ms\".");
+            Main.getCountDownLatch().countDown();
             while (true) {
                 //To start we get the screens that are currently running
                 ArrayList<String> runningProcesses = null;
                 try {
-                    runningProcesses = Storage.getSettings().getProcessHandler().listProcesses();
+                    runningProcesses = Main.getProcessHandler().listProcesses();
 
                     //We itterate over every server registered
                     HashMap<String, Server> serverList = Storage.getServerList();
@@ -46,7 +48,7 @@ public class ServerStateUpdaterTask extends Thread {
                             boolean hasProcess = false;
                             if (runningProcesses != null) {
                                 for (String s : runningProcesses) {
-                                    if (Storage.getSettings().getProcessHandler().hasActiveProcess(server, s)) { //The char is the horizontal tab
+                                    if (Main.getProcessHandler().hasActiveProcess(server, s)) { //The char is the horizontal tab
                                         hasProcess = true;
                                         break;
                                     }
@@ -80,6 +82,9 @@ public class ServerStateUpdaterTask extends Thread {
             }
         } catch (InterruptedException e) {
             Printer.printBackgroundInfo(pName, "Ending thread.");
+        } catch(Exception e)
+        {
+            Printer.printError(pName,"An unexpected error occured.",e);
         }
     }
 }

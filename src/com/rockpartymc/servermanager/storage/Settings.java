@@ -6,6 +6,7 @@ import com.rockpartymc.servermanager.processhandlers.ProcessHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -13,32 +14,23 @@ import java.io.Serializable;
  */
 public final class Settings implements Serializable {
 
-    private ProcessHandler processHandler;
-
     private File communicationDir;
 
     private long serverStateUpdaterTaskInterval;
     private long monitorRefreshRate;
     private long monitorMessagesDuration;
     private long commandSchedulerTaskInterval;
-    
+
     private boolean useConsoleColors;
     private boolean clearConsoleBeforeMenu;
     private boolean logOutput;
     private boolean printBackgroundInfoToConsole;
     private boolean backgroundInfoTimeStampsInConsole;
 
+    private String storageType;
+
     public Settings() {
         saveDefault();
-    }
-
-    public ProcessHandler getProcessHandler() {
-        return processHandler;
-    }
-
-    public void setProcessHandler(ProcessHandler processHandler) {
-        this.processHandler = processHandler;
-        Storage.saveDataToFile();
     }
 
     public File getCommunicationDir() {
@@ -47,7 +39,6 @@ public final class Settings implements Serializable {
 
     public void setCommunicationDir(File communicationDir) {
         this.communicationDir = communicationDir;
-        Storage.saveDataToFile();
     }
 
     public long getServerStateUpdaterTaskInterval() {
@@ -56,7 +47,6 @@ public final class Settings implements Serializable {
 
     public void setServerStateUpdaterTaskInterval(long serverStateUpdaterTaskInterval) {
         this.serverStateUpdaterTaskInterval = serverStateUpdaterTaskInterval;
-        Storage.saveDataToFile();
     }
 
     public long getMonitorRefreshRate() {
@@ -65,23 +55,23 @@ public final class Settings implements Serializable {
 
     public void setMonitorRefreshRate(long monitorRefreshRate) {
         this.monitorRefreshRate = monitorRefreshRate;
-        Storage.saveDataToFile();
+
     }
+
     public long getMonitorMessagesDuration() {
         return monitorMessagesDuration;
     }
 
     public void setMonitorMessagesDuration(long monitorMessagesDuration) {
         this.monitorMessagesDuration = monitorMessagesDuration;
-        Storage.saveDataToFile();
     }
+
     public long getCommandSchedulerTaskInterval() {
         return commandSchedulerTaskInterval;
     }
 
     public void setCommandSchedulerTaskInterval(long commandSchedulerTaskInterval) {
         this.commandSchedulerTaskInterval = commandSchedulerTaskInterval;
-        Storage.saveDataToFile();
     }
 
     public boolean isUseConsoleColors() {
@@ -90,12 +80,10 @@ public final class Settings implements Serializable {
 
     public void setUseConsoleColors(boolean useConsoleColors) {
         this.useConsoleColors = useConsoleColors;
-        Storage.saveDataToFile();
     }
 
     public void toggleUseConsoleColors() {
         this.useConsoleColors = !this.useConsoleColors;
-        Storage.saveDataToFile();
     }
 
     public boolean isClearConsoleBeforeMenu() {
@@ -104,26 +92,25 @@ public final class Settings implements Serializable {
 
     public void setClearConsoleBeforeMenu(boolean clearConsoleBeforeMenu) {
         this.clearConsoleBeforeMenu = clearConsoleBeforeMenu;
-        Storage.saveDataToFile();
+
     }
 
     public void toggleClearConsoleBeforeMenu() {
         this.clearConsoleBeforeMenu = !this.clearConsoleBeforeMenu;
-        Storage.saveDataToFile();
-    }
 
+    }
     public boolean isLogOutput() {
         return logOutput;
     }
 
     public void setLogOutput(boolean logOutput) {
         this.logOutput = logOutput;
-        Storage.saveDataToFile();
+
     }
 
     public void toggleLogOutput() {
         this.logOutput = !this.logOutput;
-        Storage.saveDataToFile();
+
     }
 
     public boolean isPrintBackgroundInfoToConsole() {
@@ -132,12 +119,12 @@ public final class Settings implements Serializable {
 
     public void setPrintBackgroundInfoToConsole(boolean printBackgroundInfoToConsole) {
         this.printBackgroundInfoToConsole = printBackgroundInfoToConsole;
-        Storage.saveDataToFile();
+
     }
 
     public void togglePrintBackgroundInfoToConsole() {
         this.printBackgroundInfoToConsole = !this.printBackgroundInfoToConsole;
-        Storage.saveDataToFile();
+
     }
 
     public boolean isBackgroundInfoTimeStampsInConsole() {
@@ -146,12 +133,20 @@ public final class Settings implements Serializable {
 
     public void setBackgroundInfoTimeStampsInConsole(boolean backgroundInfoTimeStampsInConsole) {
         this.backgroundInfoTimeStampsInConsole = backgroundInfoTimeStampsInConsole;
-        Storage.saveDataToFile();
+
     }
 
     public void toggleBackgroundInfoTimeStampsInConsole() {
         this.backgroundInfoTimeStampsInConsole = !this.backgroundInfoTimeStampsInConsole;
-        Storage.saveDataToFile();
+
+    }
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
     }
 
     public void printSettings() {
@@ -163,13 +158,13 @@ public final class Settings implements Serializable {
         Printer.printItem("(5) Command scheduler task interval", commandSchedulerTaskInterval + "");
         Printer.printItem("(6) Use colors in console", useConsoleColors + "");
         Printer.printItem("(7) Clear console when openning a new menu", clearConsoleBeforeMenu + "");
-        Printer.printItem("(8) Log output: ", logOutput + "");
+        Printer.printItem("(8) Log output", logOutput + "");
         Printer.printItem("(9) Print background info to console", printBackgroundInfoToConsole + "");
         Printer.printItem("(10) Print time stamps on background info in console", backgroundInfoTimeStampsInConsole + "");
+        Printer.printItem("(11) Storage type", storageType);
     }
 
     public void saveDefault() {
-        processHandler = new BashProcessHandler();
         communicationDir = new File("SMMonitorData");
         if (!communicationDir.isDirectory()) {
             Printer.printFailedReply("The directory for communication does not exist. creating it.");
@@ -191,5 +186,10 @@ public final class Settings implements Serializable {
         logOutput = true;
         printBackgroundInfoToConsole = true;
         backgroundInfoTimeStampsInConsole = true;
+        storageType = "sqlite";
+    }
+
+    public void saveFromList(List<Object> ls) {
+
     }
 }

@@ -41,21 +41,25 @@ public class Printer {
     private static String currentLogFileName;
     private static PrintWriter logWriter;
 
-    public static void printTitle(String s) {
+    public static void printTitle(String s, int size) {
         if (Storage.getSettings().isClearConsoleBeforeMenu()) {
-            Storage.getSettings().getProcessHandler().clearConsole();
+            Main.getProcessHandler().clearConsole();
         }
         String out;
         if (Storage.getSettings().isUseConsoleColors()) {
-            out = WHITE + formatDevider(" ( " + CYAN + s + WHITE + " ) ", "center", 80, '-') + RESET;
+            out = WHITE + formatDevider(" ( " + CYAN + s + WHITE + " ) ", "center", size, '-') + RESET;
         } else {
-            out = formatDevider(" ( " + s + " ) ", "center", 80, '-');
+            out = formatDevider(" ( " + s + " ) ", "center", size, '-');
         }
         if (Main.getMonitorTask() != null) {
             monitorDisplay.add(out);
         } else {
             ps.println(out);
         }
+    }
+    public static void printTitle (String s)
+    {
+        printTitle(s,80);
     }
 
     public static void printSubTitle(String s) {
@@ -75,7 +79,7 @@ public class Printer {
 
     public static void printPrompt(String s) {
         if (!Main.getInputBuffer().hasNext()) {
-            if (Storage.getSettings().isUseConsoleColors()) {
+            if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
                 ps.println(WHITE + s + RESET);
             } else {
                 ps.println(s);
@@ -90,7 +94,7 @@ public class Printer {
 
     public static void printSuccessfullReply(String s) {
         String res = "";
-        if (Storage.getSettings().isUseConsoleColors()) {
+        if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
             res = WHITE + s + RESET;
         } else {
             res = s;
@@ -110,11 +114,16 @@ public class Printer {
     }
 
     public static void printFailedReply(String s) {
-        if (Storage.getSettings().isUseConsoleColors()) {
-            ps.println(B_RED + s + RESET);
-        } else {
-            ps.println(s);
+        String out = s;
+        if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
+            out = B_RED + s + RESET;
         }
+        if (Main.getMonitorTask() != null) {
+            monitorMessages.add(new Pair(out,null));
+        } else {
+            ps.println(out);
+        }
+        Main.getIn().clear();
     }
 
     public static void printFailedReply(String name, String s) {
@@ -145,6 +154,7 @@ public class Printer {
         } else {
             ps.println(res);
         }
+        Storage.saveDataToFile();
     }
 
     public static void printDataChange(String name, String s) {
@@ -167,7 +177,7 @@ public class Printer {
 
     public static void printError(String s, Exception e) {
         String res = "";
-        if (Storage.getSettings() != null || Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
+        if (Storage.getSettings() == null || Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
             res += getTimeStamp();
         }
         res += "[Error]" + s;
@@ -190,14 +200,14 @@ public class Printer {
     }
 
     public static void printBackgroundInfo(String name, String s) {
-        if (Storage.getSettings().isPrintBackgroundInfoToConsole()) {
+        if (Storage.getSettings() == null ||  Storage.getSettings().isPrintBackgroundInfoToConsole()) {
             String res = "";
-            if (Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
+            if (Storage.getSettings() == null || Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
                 res += getTimeStamp();
             }
             res += "[" + name + "] " + s;
             log(res, null);
-            if (Storage.getSettings().isUseConsoleColors()) {
+            if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
                 res = GREY + res + RESET;
             }
             if (Main.getMonitorTask() != null) {
@@ -209,14 +219,14 @@ public class Printer {
     }
 
     public static void printBackgroundSuccess(String name, String s) {
-        if (Storage.getSettings().isPrintBackgroundInfoToConsole()) {
+        if (Storage.getSettings() == null || Storage.getSettings().isPrintBackgroundInfoToConsole()) {
             String res = "";
-            if (Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
+            if (Storage.getSettings() == null || Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
                 res += getTimeStamp();
             }
             res += "[" + name + "] " + s;
             log(res, null);
-            if (Storage.getSettings().isUseConsoleColors()) {
+            if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
                 res = B_GREEN + res + RESET;
             }
             if (Main.getMonitorTask() != null) {
@@ -228,13 +238,14 @@ public class Printer {
     }
 
     public static void printBackgroundFail(String name, String s) {
-        if (Storage.getSettings().isPrintBackgroundInfoToConsole()) {
+        if (Storage.getSettings() == null || Storage.getSettings().isPrintBackgroundInfoToConsole()) {
             String res = "";
-            if (Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
+            if (Storage.getSettings() == null || Storage.getSettings().isBackgroundInfoTimeStampsInConsole()) {
                 res += getTimeStamp();
             }
             res += "[" + name + "] " + s;
-            if (Storage.getSettings().isUseConsoleColors()) {
+            log(res, null);
+            if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
                 res = B_RED + res + RESET;
             }
             if (Main.getMonitorTask() != null) {
@@ -242,7 +253,7 @@ public class Printer {
             } else {
                 ps.println(res);
             }
-            log(res, null);
+            
         }
     }
 
@@ -299,9 +310,9 @@ public class Printer {
         }
         return "[" + hour + ":" + minute + ":" + second + "]";
     }
-
+    
     private static void log(String msg, Exception e) {
-        if (Storage.getSettings().isLogOutput()) {
+        if (Storage.getSettings() == null || Storage.getSettings().isLogOutput()) {
             if (!logDirectory.isDirectory()) {
                 logDirectory.mkdir();
             }

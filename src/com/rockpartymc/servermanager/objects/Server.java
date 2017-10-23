@@ -1,10 +1,10 @@
 package com.rockpartymc.servermanager.objects;
 
+import com.rockpartymc.servermanager.Main;
 import com.rockpartymc.servermanager.consolecommunication.Printer;
 import com.rockpartymc.servermanager.tasks.ServerCommandSchedulerTask;
 import com.rockpartymc.servermanager.Utilities;
 import com.rockpartymc.servermanager.processhandlers.ProcessHandler;
-import com.rockpartymc.servermanager.storage.Storage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,11 +13,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import static com.rockpartymc.servermanager.objects.ServerState.*;
+import java.util.concurrent.TimeUnit;
 
 public class Server implements Serializable {
 
-    private final String name;
-    private final File file;
+    private String name;
+    private File file;
+    private File monitorFile;
     private Long lastPing;
     private Long fileUpdateInterval;
     private ArrayList<TimedCommand> timedCommands;
@@ -45,11 +47,15 @@ public class Server implements Serializable {
             Printer.printBackgroundFail(name, "Could not start server. It is not offline.");
             return false;
         }
+        if(!file.isFile())
+        {
+            Printer.printBackgroundFail(name, "Could not start server. Jar file is missing.");
+        }
         Server server = this;
         currentThread = new Thread() {
             public void run() {
                 try {
-                    Process p = Storage.getSettings().getProcessHandler().startServerProcess(server);
+                    Process p = Main.getProcessHandler().startServerProcess(server);
                     ProcessHandler.finishProcess(p, name + " >> START");
                     try {
                         Thread.sleep(server.getSettings().getMaxStartingDuration());
@@ -61,6 +67,8 @@ public class Server implements Serializable {
                     }
                 } catch (IOException e) {
                     Printer.printError(server.getName(), "Failed to send start command to the server.", e);
+                } catch (Exception e) {
+                    Printer.printError("start-" + name, "An unexpected error occured.", e);
                 }
                 currentThread = null;
             }
@@ -99,7 +107,7 @@ public class Server implements Serializable {
         currentThread = new Thread() {
             public void run() {
                 try {
-                    Process p = Storage.getSettings().getProcessHandler().sendCommandToServer(server, server.getSettings().getStopCommand());
+                    Process p = Main.getProcessHandler().sendCommandToServer(server, server.getSettings().getStopCommand());
                     ProcessHandler.finishProcess(p, name + " >> STOP");
                     try {
                         Thread.sleep(server.getSettings().getMaxStoppingDuration());
@@ -111,6 +119,8 @@ public class Server implements Serializable {
                     }
                 } catch (IOException e) {
                     Printer.printError(server.getName(), "Failed to send stop command to the server.", e);
+                } catch (Exception e) {
+                    Printer.printError("stop-" + name, "An unexpected error occured.", e);
                 }
                 currentThread = null;
             }
@@ -132,7 +142,7 @@ public class Server implements Serializable {
         currentThread = new Thread() {
             public void run() {
                 try {
-                    ProcessHandler ph = Storage.getSettings().getProcessHandler();
+                    ProcessHandler ph = Main.getProcessHandler();
                     Process p = ph.killServerProcess(server, true);
                     Utilities.printStream(p.getErrorStream());
                     ProcessHandler.finishProcess(p, name + " >> KILL(15)");
@@ -146,10 +156,10 @@ public class Server implements Serializable {
                     if (ph.hasActiveProcess(server)) {
                         Printer.printError(server.getName(), "Failed to kill the server process", null);
                     }
-                } catch (IOException e) {
-                    Printer.printError(name, "Unexpected error while trying to kill the server.", e);
                 } catch (InterruptedException e) {
 
+                } catch (Exception e) {
+                    Printer.printError("kill-" + name, "An unexpected error occured.", e);
                 }
                 currentThread = null;
             }
@@ -161,9 +171,9 @@ public class Server implements Serializable {
     }
 
     public boolean sendCommand(String command) {
-        if (state == ONLINE) {
+        if (state == ONLINE || state == NOTRESPONDING) {
             try {
-                Process p = Storage.getSettings().getProcessHandler().sendCommandToServer(this, command);
+                Process p = Main.getProcessHandler().sendCommandToServer(this, command);
                 if (ProcessHandler.finishProcess(p, name + " >> SEND")) {
                     Printer.printBackgroundSuccess(name, "Successfuly sent command \"" + command + "\" to the server.");
                 }
@@ -171,12 +181,52 @@ public class Server implements Serializable {
             } catch (IOException e) {
                 Printer.printError(name, "Failed to send command \"" + command + "\" to the server.", e);
                 return false;
+            }  catch (Exception e) {
+                    Printer.printError("send-command-" + name, "An unexpected error occured.", e);
             }
         }
-        Printer.printBackgroundFail(name, "Failed to send command \"" + command + "\" to the server. Server must be online.");
+        Printer.printBackgroundFail(name, "Failed to send command \"" + command + "\" to the server. Server must be online or notresponding.");
         return false;
     }
-
+    public boolean backup(BackupProfile bp)
+    {
+        String pName =name +  "-" + bp.getName() + "-backup";
+        Server s = this;
+        Thread thread = new Thread()
+        {
+            public void run()
+            {
+                Printer.printBackgroundInfo(pName, "Starting backup process.");
+                try {
+                    Process p = Main.getProcessHandler().executeBackup(s,bp);
+                    try {
+                        int secs = 10;
+                        while(true)
+                        {
+                            p.waitFor(secs, TimeUnit.SECONDS);
+                            if(!p.isAlive())
+                            {
+                                break;
+                            }
+                            Printer.printBackgroundInfo(pName, "backing up in progress...");
+                            secs += 5;
+                        }
+                        Printer.printBackgroundSuccess(pName, "has completed the backup successfully.");
+                    } catch (InterruptedException e)
+                    {
+                        Printer.printError(pName,"Possibly failed to execute backup", e);
+                    }
+                } catch (IOException ex) {
+                    Printer.printError(pName, "Failed to execute backup", ex);
+                } catch (Exception e) {
+                    Printer.printError("backup-" + name, "An unexpected error occured.", e);
+                }
+            }
+        };
+        thread.setName(pName);
+        thread.start();
+        return true;
+    }
     public void endCurrentThread() {
         try {
             if (currentThread != null) {
@@ -218,7 +268,7 @@ public class Server implements Serializable {
         }
     }
 
-    public void printInfo(boolean inDetail) {
+    public void printInfo(int lvl) {
         String defColor = "$_Y";
         Printer.printSubTitle("Server \"" + name + "\"");
         String stateColor = Printer.getCCC(state);
@@ -231,14 +281,14 @@ public class Server implements Serializable {
                     defColor + "State: " + stateColor + state.toString(),
                     defColor + "Last Ping: $$W" + Timing.getDurationBreakdown(System.currentTimeMillis() - lastPing)));
         }
-        if (customMessages != null && customMessages.size() > 0 && state == ONLINE) {
+        if (lvl >= 1 && customMessages != null && customMessages.size() > 0 && state == ONLINE) {
             synchronized (customMessages) {
                 for (String msg : customMessages) {
                     Printer.printCustom(msg);
                 }
             }
         }
-        if (inDetail) {
+        if (lvl >= 3) {
             Printer.printCustom(String.format("%-42s  %-23s",
                     defColor + "Directory: $$W" + file.getParent(),
                     defColor + "Server jar: $$W" + file.getName()));
@@ -249,6 +299,7 @@ public class Server implements Serializable {
                     defColor + "Max RAM: " + Printer.getCCC(settings.getMaxRam()) + settings.getMaxRam(),
                     defColor + "Start RAM: " + Printer.getCCC(settings.getStartRam()) + settings.getStartRam()));
         }
+        if(lvl >= 2) {
         if (!timedCommands.isEmpty()) {
             Printer.printCustom("$$W(" + timedCommands.size() + ") Timed Commands:");
             List<TimedCommand> sortedTimedCommands = (List<TimedCommand>) timedCommands.clone();
@@ -279,7 +330,7 @@ public class Server implements Serializable {
             }
         } else {
             Printer.printCustom("$$WThis server has no timed commands");
-        }
+        }}
         Printer.newLine();
     }
 
@@ -313,7 +364,7 @@ public class Server implements Serializable {
         synchronized (timedCommands) {
             this.timedCommands.add(tc);
         }
-        Storage.saveDataToFile();
+        
         ServerCommandSchedulerTask.processTimedCommand(this, tc);
     }
 
@@ -321,14 +372,14 @@ public class Server implements Serializable {
         synchronized (timedCommands) {
             this.timedCommands.remove(i);
         }
-        Storage.saveDataToFile();
+        
     }
 
     public void removeTimedCommand(TimedCommand i) {
         synchronized (timedCommands) {
             this.timedCommands.remove(i);
         }
-        Storage.saveDataToFile();
+        
     }
 
     public void initializeState() {
@@ -382,5 +433,12 @@ public class Server implements Serializable {
             }
         }
         customMessages = msgs;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setFile(File file) {
+        this.file = file;
     }
 }

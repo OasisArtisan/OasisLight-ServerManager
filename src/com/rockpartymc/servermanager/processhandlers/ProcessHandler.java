@@ -7,6 +7,7 @@ package com.rockpartymc.servermanager.processhandlers;
 
 import com.rockpartymc.servermanager.consolecommunication.Printer;
 import com.rockpartymc.servermanager.Utilities;
+import com.rockpartymc.servermanager.objects.BackupProfile;
 import com.rockpartymc.servermanager.objects.Server;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ public interface ProcessHandler {
     public boolean hasActiveProcess(Server server) throws IOException;
     public boolean hasActiveProcess(Server server, String processListElement);
     public boolean clearConsole();
+    public Process executeBackup(Server s, BackupProfile bp) throws IOException;
+    public boolean checkPrerequisites();
+    public void waitForKeyPress();
     public static boolean finishProcess(Process p, String pname) {
         try { 
             p.waitFor(4, TimeUnit.SECONDS);

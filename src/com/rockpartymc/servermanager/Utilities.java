@@ -3,11 +3,16 @@ package com.rockpartymc.servermanager;
 
 import com.rockpartymc.servermanager.consolecommunication.Printer;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Utilities {
@@ -31,15 +36,40 @@ public class Utilities {
             s=br.readLine();
         }
     }
-    public static List<String> seperateArgs(String s)
-    {
+
+    public static List<String> seperateArgs(String s, String delim) {
         List<String> list = new ArrayList();
-        StringTokenizer st = new StringTokenizer(s);
-        while(st.hasMoreTokens())
-        {
-            list.add(st.nextToken());
+        if (!s.trim().isEmpty()) {
+            StringTokenizer st = new StringTokenizer(s, delim);
+            while (st.hasMoreTokens()) {
+                list.add(st.nextToken());
+            }
         }
         return list;
+    }
+
+    public static String listArgs(List<String> ls, String delim)
+    {
+        String rs = "";
+        for(String s : ls)
+        {
+            rs += s + delim;
+        }
+        if(ls.isEmpty())
+        {
+            return rs;
+        }
+        return rs.substring(0,rs.length()-delim.length());
+    }
+    /**
+     * Source: http://programming.guide/java/formatting-byte-size-to-human-readable-format.html
+     */
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
     public static String isValidRam(String s)
     {
@@ -92,5 +122,47 @@ public class Utilities {
             return false;
         }
 
+    }
+    public static List removeNulls(List ls)
+    {
+        List nls = new ArrayList(ls);
+        for(Object o : ls)
+        {
+            if(o != null)
+            {
+                nls.add(o);
+            }
+        }
+        return nls;
+    }
+    public static String getFileInfo(File file)
+    {
+        String s = null;
+        if(file.isFile())
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            s = file.getName() + " Size: " + Utilities.humanReadableByteCount(file.length(), false) + " Last Modified: " +sdf.format(file.lastModified());
+        }
+        return s;
+    }
+    public static String readLocalFile(String path)
+    {
+        InputStream is = Class.class.getResourceAsStream("/" + path);
+        Scanner sc = new Scanner(is);
+        String s = "";
+        while (sc.hasNextLine())
+        {
+            s += sc.nextLine();
+            if(sc.hasNextLine())
+            {
+                s += System.lineSeparator();
+            }
+        }
+        return s;
+    }
+    public static String getDateStamp()
+    {
+        Calendar c = Calendar.getInstance();
+        return c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
     }
 }

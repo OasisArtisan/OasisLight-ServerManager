@@ -27,7 +27,7 @@ public class ServerSettings implements Serializable{
 
     public void setStopCommand(String stopCommand) {
         this.stopCommand = stopCommand;
-        Storage.saveDataToFile();
+        
     }
     public long getMaxStartingDuration() {
         return maxStartingDuration;
@@ -35,7 +35,7 @@ public class ServerSettings implements Serializable{
 
     public void setMaxStartingDuration(Long maxStartingDuration) {
         this.maxStartingDuration = maxStartingDuration;
-        Storage.saveDataToFile();
+        
     }
 
     public long getMaxStoppingDuration() {
@@ -44,7 +44,7 @@ public class ServerSettings implements Serializable{
 
     public void setMaxStoppingDuration(Long maxStoppingDuration) {
         this.maxStoppingDuration = maxStoppingDuration;
-        Storage.saveDataToFile();
+        
     }
     
     public String getStartRam() {
@@ -53,7 +53,7 @@ public class ServerSettings implements Serializable{
 
     public void setStartRam(String startRam) {
         this.startRam = startRam;
-        Storage.saveDataToFile();
+        
     }
 
     public String getMaxRam() {
@@ -62,7 +62,7 @@ public class ServerSettings implements Serializable{
 
     public void setMaxRam(String maxRam) {
         this.maxRam = maxRam;
-        Storage.saveDataToFile();
+        
     }
 
     public boolean isStartIfOffline() {
@@ -71,12 +71,12 @@ public class ServerSettings implements Serializable{
 
     public void setStartIfOffline(boolean startIfOffline) {
         this.startIfOffline = startIfOffline;
-        Storage.saveDataToFile();
+        
     }
     
     public void toggleStartIfOffline() {
         startIfOffline = !startIfOffline;
-        Storage.saveDataToFile();
+        
     }
     
     public boolean isRestartIfNotResponding() {
@@ -85,11 +85,11 @@ public class ServerSettings implements Serializable{
 
     public void setRestartIfNotResponding(boolean restartIfNotResponding) {
         this.restartIfNotResponding = restartIfNotResponding;
-        Storage.saveDataToFile();
+        
     }
     public void toggleRestartIfNotResponding() {
         restartIfNotResponding = !restartIfNotResponding;
-        Storage.saveDataToFile();
+        
     }
     public void printSettings(String server)
     {

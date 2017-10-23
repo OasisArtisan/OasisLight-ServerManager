@@ -32,6 +32,7 @@ public class ServerFileCommunicatorTask extends Thread {
 
     public void run() {
         Printer.printBackgroundInfo(PNAME, "Starting thread using the directory \"" + Storage.getSettings().getCommunicationDir() + "\".");
+        Main.getCountDownLatch().countDown();
         try {
             //Atempt to update all the servers' monitor data.
             HashMap<String, Server> serverList = Storage.getServerList();
@@ -100,6 +101,8 @@ public class ServerFileCommunicatorTask extends Thread {
             } catch (IOException ex1) {
                 Printer.printError(PNAME, "Failed to close watch service.", ex);
             }
+        } catch (Exception e) {
+            Printer.printError(PNAME, "An unexpected error occured.", e);
         }
     }
 

@@ -5,12 +5,14 @@
  */
 package com.rockpartymc.servermanager.tasks;
 
-import com.rockpartymc.servermanager.processhandlers.BashProcessHandler;
+import com.rockpartymc.servermanager.Main;
 import com.rockpartymc.servermanager.consolecommunication.Printer;
 import com.rockpartymc.servermanager.objects.Server;
 import com.rockpartymc.servermanager.storage.Storage;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -20,37 +22,72 @@ import java.util.Locale;
 public class MonitorTask extends Thread {
 
     private long interval;
-    private boolean inDetail;
-
-    public MonitorTask(long interval, boolean inDetail) {
+    private int lvl;
+    private List<String> serverNames;
+    public static final String pName = "Monitor";
+    public MonitorTask(long interval, int lvl) {
         this.interval = interval;
-        this.inDetail = inDetail;
+        this.lvl = lvl;
+    }
+    public MonitorTask(long interval,int lvl, List<String> serverNames) {
+        this.interval = interval;
+        this.serverNames = serverNames;
+        this.lvl = lvl;
     }
 
     public void run() {
         try {
+            HashMap<String, Server> serverList = Storage.getServerList();
+            //Add the servers that will be displayed to a seperate list
+            List<Server> orderedServerList = new ArrayList();
+            if (serverNames.isEmpty()) {
+                for (Server s : serverList.values()) {
+                    orderedServerList.add(s);
+                }
+            } else {
+                for (String name : serverNames) {
+                    boolean found = false;
+                    for (Server s : serverList.values()) {
+                        if (name.equalsIgnoreCase(s.getName())) {
+                            orderedServerList.add(s);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        Printer.printFailedReply(pName, "Server \"" + name + "\" was not found.");
+                    }
+                }
+            }
+            //Enter the monitor loop
             while (true) {
-                Printer.printTitle("Monitor");
+                Printer.printTitle(pName);
                 Calendar c = Calendar.getInstance();
                 Printer.printCustom(Printer.formatDevider("$BC"
                         + c.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT_FORMAT, Locale.ENGLISH) + ", "
                         + c.get(Calendar.DAY_OF_MONTH) + " "
                         + c.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.ENGLISH) + " "
                         + c.get(Calendar.YEAR) + " " + Printer.getTimeStamp(), "CENTER", 80, ' '));
-                HashMap<String, Server> serverList = Storage.getServerList();
+                if(lvl >= 2)
+                {
+                    Storage.getGlobalServer().printTimedCommands();
+                }
                 synchronized (serverList) {
-                    for (Server s : serverList.values()) {
-                        s.printInfo(inDetail);
+                    for (Server s : orderedServerList) {
+                        s.printInfo(lvl);
                     }
                 }
                 Printer.printSuccessfullReply("");
-                Printer.printSuccessfullReply("Enter any charactar to exit");
-                Storage.getSettings().getProcessHandler().clearConsole();
+                Printer.printSuccessfullReply("Hit 'Enter' to get back to the main menu...");
+                Main.getProcessHandler().clearConsole();
                 Printer.flushMonitorDisplay();
                 Printer.flushMonitorMessages(Storage.getSettings().getMonitorMessagesDuration());
                 Thread.sleep(interval);
             }
         } catch (InterruptedException e) {
+            Main.getProcessHandler().clearConsole();
+        }catch (Exception e) {
+            Printer.printError(pName, "An unexpected error occured.", e);
         }
     }
 }

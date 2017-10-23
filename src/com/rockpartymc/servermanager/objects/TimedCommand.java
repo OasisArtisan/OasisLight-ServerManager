@@ -35,7 +35,7 @@ public class TimedCommand implements Serializable {
     public static boolean isValidCommand(String cmd) {
         try {
             if (cmd.equals("start") || cmd.equals("stop") || cmd.equals("restart") || cmd.equals("kill")
-                    || cmd.equals("send")) {
+                    || cmd.equals("send") || cmd.equals("backup") ){
                 return true;
             }
 
