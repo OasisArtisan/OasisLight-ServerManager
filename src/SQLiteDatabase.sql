@@ -3,11 +3,15 @@
  * Created: Aug 1, 2017
  */
 PRAGMA user_version=1;
+PRAGMA journal_mode = OFF;
 CREATE TABLE IF NOT EXISTS Servers (
     Server_Name TEXT NOT NULL UNIQUE,
     Server_File  TEXT NOT NULL,
+    Linked INT DEFAULT 0 NOT NULL CHECK(Linked == 0 OR Linked ==1),
     Last_Ping BIGINT,
-    File_Update_Interval BIGINT
+    File_Update_Interval BIGINT,
+    LastBackup BIGINT,
+    LastBackupType TEXT
 );
 CREATE TABLE IF NOT EXISTS Servers_Timed_Commands (
     Server_Name TEXT NOT NULL,
