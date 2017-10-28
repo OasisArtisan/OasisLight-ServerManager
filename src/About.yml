@@ -1,13 +1,8 @@
 Program:
-    name: 'Server Manager'
+    name: 'Oasis Server Manager'
     version: 1.1
     supported-platforms:
         - 'bash'
-    available-plugins:
-        ServerManagerMonitor:
-            author: 'Ben Burum'
-            platform: 'Minecraft Spigot Server'
-            download-link: 'www.spigot.com/benburum'
 Author:
     name: 'Omar Alama'
     website: 'www.omaralama.com'
