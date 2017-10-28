@@ -105,7 +105,15 @@ public class Main {
         in = new InputBuffer(System.in);
         in.start();
         processHandler = new BashProcessHandler();
+        try {
         if (!processHandler.checkPrerequisites()) {
+            Printer.printPrompt("Hit 'Enter' to exit...");
+            Main.getIn().waitForEnter();
+            System.exit(0);
+        }
+        } catch(InterruptedException e)
+        {
+            Printer.printError("Main", "Failed to check for prerequisites.", e);
             Printer.printPrompt("Hit 'Enter' to exit...");
             Main.getIn().waitForEnter();
             System.exit(0);
@@ -957,7 +965,7 @@ public class Main {
                     if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
                         return;
                     }
-                    if (input.equals("help") || input.equals("h")) {
+                    if (input.equalsIgnoreCase("help") || input.equalsIgnoreCase("h")) {
                         Timing.printTimeFormats(pName);
                         continue;
                     }

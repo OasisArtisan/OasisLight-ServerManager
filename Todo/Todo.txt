@@ -1,0 +1,3 @@
+- Make the stop command ignore the "start if offline" option
+- Keep track of all processes in the shutdown task to shut down gracefully
+- Make a thread that makes sure that the manager shuts down withing 10 seconds or kill it. 

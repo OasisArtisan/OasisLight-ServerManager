@@ -19,15 +19,15 @@ import java.util.concurrent.TimeUnit;
  */
 public interface ProcessHandler {
 
-    public Process sendCommandToServer(Server server, String cmd) throws IOException;
+    public Process sendCommandToServer(Server server, String cmd) throws IOException, InterruptedException;
 
     public Process startServerProcess(Server server) throws IOException;
 
-    public Process killServerProcess(Server server, boolean gracefull) throws IOException;
+    public Process killServerProcess(Server server, boolean gracefull) throws IOException, InterruptedException;
 
-    public ArrayList<String> listProcesses() throws IOException;
+    public ArrayList<String> listProcesses() throws IOException, InterruptedException;
 
-    public boolean hasActiveProcess(Server server) throws IOException;
+    public boolean hasActiveProcess(Server server) throws IOException, InterruptedException;
 
     public boolean hasActiveProcess(Server server, String processListElement);
 
@@ -37,15 +37,19 @@ public interface ProcessHandler {
 
     public String translateBackupOutputToProgress(String[] output);
     
-    public boolean checkPrerequisites();
+    public boolean checkPrerequisites() throws InterruptedException;
 
     public void waitForKeyPress();
 
-    public static boolean finishProcess(Process p, String pname) {
+    public static boolean finishProcess(Process p, String pname) throws InterruptedException{
+        boolean interrupted = false;
         try {
-            p.waitFor(4, TimeUnit.SECONDS);
+            p.waitFor(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            Printer.printError("[" + pname + "] The process has been interrupted.", e);
+            interrupted = true;
+            p.destroy();
+            Printer.printBackgroundInfo(pname, "The process has been interrupted.");
+            p.waitFor(2, TimeUnit.SECONDS);
         }
         if (!p.isAlive()) {
             try {
@@ -53,10 +57,18 @@ public interface ProcessHandler {
             } catch (IOException e) {
                 Printer.printError("[" + pname + "] Failed to read error stream for process.", e);
             }
+            if(interrupted)
+            {
+                throw new InterruptedException();
+            }
             return true;
         } else {
-            p.destroy();
+            p.destroyForcibly();
             Printer.printError("[" + pname + "] The process is taking too long to finish. destroying it.", null);
+            if(interrupted)
+            {
+                throw new InterruptedException();
+            }
             return false;
         }
     }

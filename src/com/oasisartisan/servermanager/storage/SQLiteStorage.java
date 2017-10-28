@@ -204,7 +204,7 @@ public class SQLiteStorage extends Storage {
                             long l = (long) rs.getInt(serversColumns[3]);
                             s.setLastPing(l == 0 ? null : l);
                             s.setFileUpdateInterval((long) rs.getInt(serversColumns[4]));
-                            l = (long) rs.getInt(serversColumns[5]);
+                            l = (long) rs.getLong(serversColumns[5]);
                             s.setLastBackup(l == 0 ? null : l);
                             s.setLastBackupType(rs.getString(serversColumns[6]));
 
@@ -214,7 +214,7 @@ public class SQLiteStorage extends Storage {
                     }
                     //Load Server settings
                     rs = c.createStatement().executeQuery("SELECT " + "*" + " FROM Servers_Settings");
-                    if (rs.isClosed()) {
+                    if (!rs.isClosed()) {
                         while (rs.next()) {
                             String name = rs.getString(serversSettingsColumns[0]);
                             Server s = serverList.get(name);

@@ -51,7 +51,10 @@ public class ServerFileCommunicatorTask extends Thread {
                 File file = Storage.getSettings().getCommunicationDir();
                 if (!file.isDirectory()) {
                     Printer.printBackgroundInfo(PNAME, "The communication directory does not exist. creating it...");
-                    file.mkdirs();
+                    if(!file.mkdirs())
+                    {
+                        Printer.printError(PNAME, "Failed to create the communication directory.", null);
+                    }
                 }
                 Storage.getSettings().getCommunicationDir().toPath()
                         .register(ws, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);

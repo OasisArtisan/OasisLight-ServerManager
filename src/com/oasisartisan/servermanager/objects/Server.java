@@ -30,6 +30,7 @@ public class Server implements Serializable {
     private transient ServerState state;
     private transient Thread currentThread;
     private transient boolean restarting;
+    private transient boolean stopping;
     public transient boolean ignorePing = false;
     
     //Backup variables
@@ -62,6 +63,7 @@ public class Server implements Serializable {
         }
         if (!file.isFile()) {
             Printer.printBackgroundFail(name, "Could not start server. Jar file is missing.");
+            return false;
         }
         Server server = this;
         currentThread = new Thread() {
@@ -325,13 +327,14 @@ public class Server implements Serializable {
                 endCurrentThread();
             }
         }
+        boolean wasStopping = this.state == STOPPING;
         if (this.state != state) {
             Printer.printBackgroundInfo(name, "Server is now \"" + state.toString() + "\".");
             this.state = state;
         }
         if (this.state == NOTRESPONDING && settings.isRestartIfNotResponding()) {
             restart();
-        } else if (this.state == OFFLINE && (settings.isStartIfOffline() || restarting)) {
+        } else if (this.state == OFFLINE && ((!wasStopping && settings.isStartIfOffline()) || restarting)) {
             start();
             if (restarting) {
                 restarting = false;
@@ -575,5 +578,13 @@ public class Server implements Serializable {
 
     public void setLastBackupType(String lastBackupType) {
         this.lastBackupType = lastBackupType;
+    }
+
+    public Thread getBackupThread() {
+        return backupThread;
+    }
+
+    public Thread getBackupProgressReader() {
+        return backupProgressReader;
     }
 }

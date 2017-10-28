@@ -59,7 +59,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
     }
 
     @Override
-    public boolean checkPrerequisites() {
+    public boolean checkPrerequisites() throws InterruptedException{
         List<String> msgs = new ArrayList();
         try {
             listProcesses();
@@ -120,7 +120,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
     }
 
     @Override
-    public Process sendCommandToServer(Server server, String cmd) throws IOException {
+    public Process sendCommandToServer(Server server, String cmd) throws IOException, InterruptedException{
         ArrayList<String> list = new ArrayList();
         list.add("screen");
         list.add("-S");
@@ -153,7 +153,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
     }
 
     @Override
-    public Process killServerProcess(Server server, boolean graceful) throws IOException {
+    public Process killServerProcess(Server server, boolean graceful) throws IOException, InterruptedException {
         ArrayList<String> cmd = new ArrayList();
         cmd.add("kill");
         if (graceful) {
@@ -175,7 +175,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
     }
 
     @Override
-    public ArrayList<String> listProcesses() throws IOException {
+    public ArrayList<String> listProcesses() throws IOException, InterruptedException {
         ArrayList<String> cmd = new ArrayList();
         cmd.add("jps");
         cmd.add("-m");
@@ -185,7 +185,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
     }
 
     @Override
-    public boolean hasActiveProcess(Server server) throws IOException {
+    public boolean hasActiveProcess(Server server) throws IOException, InterruptedException {
         ArrayList<String> cmd = listProcesses();
         for (String s : cmd) {
             if (hasActiveProcess(server, s)) {
@@ -294,7 +294,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
 
     }
 
-    private String getServerFullScreenName(Server server) throws IOException {
+    private String getServerFullScreenName(Server server) throws IOException, InterruptedException{
         ArrayList<String> ls = listScreens();
         for (String s : ls) {
             if (s.contains("." + server.getName() + ((char) 9))) {
@@ -317,7 +317,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
         return null;
     }
 
-    private ArrayList<String> listScreens() throws IOException {
+    private ArrayList<String> listScreens() throws IOException, InterruptedException{
         ArrayList<String> cmd = new ArrayList();
         cmd.add("screen");
         cmd.add("-ls");

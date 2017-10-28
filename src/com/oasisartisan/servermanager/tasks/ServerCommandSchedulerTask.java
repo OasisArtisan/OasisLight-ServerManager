@@ -46,6 +46,13 @@ public class ServerCommandSchedulerTask extends Thread {
                             }
                         }
                     }
+                    synchronized(Storage.getGlobalServer().getTimedCommands())
+                    {
+                        for(TimedCommand tc : Storage.getGlobalServer().getTimedCommands())
+                        {
+                            processTimedCommand(Storage.getGlobalServer(), tc);
+                        }
+                    }
                     Thread.sleep(interval);
                     long newInterval = Storage.getSettings().getCommandSchedulerTaskInterval();
                     if (interval != newInterval) {
