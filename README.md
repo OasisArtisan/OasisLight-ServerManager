@@ -8,6 +8,6 @@ A light weight java program for linux users that makes managing and monitoring s
 - Custom full backups of all your servers to a minimal compressed size.
 - Scheduale periodic restarts, backups, announcements, or any console command for any server.
 - A monitor screen that displays all of your servers and their status in one place.
-- Extremely light as it can run on as little as 10MB of ram or less.
+- Extremely light as it can run on as little as 5MB of RAM for medium sized networks.
 
 ## Getting started
