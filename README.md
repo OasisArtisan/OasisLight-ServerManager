@@ -7,7 +7,8 @@ A light weight java program for linux users that makes managing and monitoring s
 - Automatic restart option for any crashed servers. (Makes sure your servers stay online)
 - Custom full backups of all your servers to a minimal compressed size.
 - Scheduale periodic restarts, backups, announcements, or any console command for any server.
-- A monitor screen that displays all of your servers and their status in one place.
+- A customizable monitor screen that displays all of your servers and their status in one place.
+- A global control panel to restart, backup, send a command to all servers with one command.
 - Extremely light as it can run on as little as 5MB of RAM for medium sized networks.
 
 ## Getting started
@@ -37,6 +38,7 @@ Now that you started the manager you should keep these commands in mind which wo
 - type in the name you want to give for the server.
 - type in the path to the server's jar file ex. /home/oasis/survival/spigot.jar
 
-And you're all set you can open the server using `open <name>` and start the server from the control menu.
+And you're all set you can open the server's control menu using `open servername` from the main menu and `start` the server from the control menu.
+To open the server's console open a new terminal and type `screen -x servername`.
 
-**The manager is fairly easy to understand and navigate however if you need explicit instructions on how to utilize all the features visit the wiki.**
+**The manager is fairly easy to understand and navigate. However, if you need explicit instructions on how to utilize all the features visit the wiki.**
