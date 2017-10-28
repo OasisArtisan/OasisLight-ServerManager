@@ -1,5 +1,5 @@
 # OasisLight | Linux Server Manager
-A light weight java program for linux users that makes managing and monitoring servers extremely easy.
+A light weight java console program for linux users that makes managing and monitoring servers extremely easy.
 
 ## Features
 - The manager is open source and free to use for as many servers and as many players as you like
@@ -10,6 +10,7 @@ A light weight java program for linux users that makes managing and monitoring s
 - A customizable monitor screen that displays all of your servers and their status in one place.
 - A global control panel to restart, backup, send a command to all servers with one command.
 - Extremely light as it can run on as little as 5MB of RAM for medium sized networks.
+- The manager can be used alongside a small server plugin to detect unresponsive states and to recieve player counts,ram usage etc.
 
 ## Getting started
 ### Starting the manager
@@ -31,6 +32,7 @@ Now that you started the manager you should keep these commands in mind which wo
 - **back** You can always back out of any menu or any process so make sure to use it whenever stuck.
 - **clear** Whenever you feel like the screen is filled with old output use clear to clear your screen and show you the current active menu.
 - **quit** you can quit the program from any place in the manager this is the equivelant of `ctrl + c`.
+Note: quiting the manager does not stop any servers. it simply stops all the services and schedualed commands the manager provides.
 
 ### Adding your first server
 - Make sure that the server is offline.
@@ -42,3 +44,11 @@ And you're all set you can open the server's control menu using `open servername
 To open the server's console open a new terminal and type `screen -x servername`.
 
 **The manager is fairly easy to understand and navigate. However, if you need explicit instructions on how to utilize all the features visit the wiki.**
+
+## Supported platforms
+- All linux distributions that have the 4 prerequisites installed.
+
+## Support
+- If you are having any issues in setting up the manager feel free to join the discord server https://discord.gg/cHFMXGz and ask me directly.
+- If you think there is a bug in the code open an issue on the issue page on github
+- If you want to suggest improvements or request features to be added, preferrably open an issue with the tag [suggestion] in the title. or message me on discord.
