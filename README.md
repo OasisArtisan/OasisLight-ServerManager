@@ -52,3 +52,9 @@ To open the server's console open a new terminal and type `screen -x servername`
 - If you are having any issues in setting up the manager feel free to join the discord server https://discord.gg/cHFMXGz and ask me directly.
 - If you think there is a bug in the code open an issue on the issue page on github
 - If you want to suggest improvements or request features to be added, preferrably open an issue with the tag [suggestion] in the title. or message me on discord.
+
+## To do list
+- [x] Add a global panel for controlling all servers at once.
+- [ ] Determine unresponsive states without using a plugin.
+- [ ] Enable raw input mode which will allow command history and writing commands in the monitor screen.
+- [ ] Add A GUI.
