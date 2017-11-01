@@ -48,13 +48,15 @@ Note: quiting the manager does not stop any servers. it simply stops all the ser
 And you're all set you can open the server's control menu using `open servername` from the main menu and `start` the server from the control menu.
 To open the server's console open a new terminal and type `screen -x servername`.
 
+An important thing to note is that the manager was initially made to be used alongside a monitoring plugin. Therefore i recommend installing a monitor plugin on each of your servers by [following this guide](https://github.com/OasisArtisan/OasisLight-ServerManager/wiki/Using-Monitor-Plugins).
+
 **The manager is fairly easy to understand and navigate. However, if you need explicit instructions on how to utilize all the features visit the wiki.**
 
 ## Supported platforms
 - All linux distributions that have the 4 prerequisites installed.
 
 ## Support
-- If you are having any issues in setting up the manager feel free to join the discord server https://discord.gg/cHFMXGz and ask me directly.
+- If you are having any issues in setting up the manager feel free to [join the discord server](https://discord.gg/cHFMXGz) and ask me directly.
 - If you think there is a bug in the code open an issue on the issue page on github
 - If you want to suggest improvements or request features to be added, preferrably open an issue with the tag [suggestion] in the title. or message me on discord.
 
