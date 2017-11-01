@@ -27,8 +27,8 @@ import java.util.concurrent.Future;
 
 public class Main {
 
-    public static final String PROGRAM_NAME = "Oasis Server Manager";
-    public static final String WIKI_LINK = "www.github.placeholder.com";
+    public static final String PROGRAM_NAME = "OasisLight-Server Manager";
+    public static final String WIKI_LINK = "https://github.com/OasisArtisan/OasisLight-ServerManager/wiki";
 
     public static final String VERSION = "1.1";
     private static ProcessHandler processHandler;
@@ -195,7 +195,7 @@ public class Main {
                     Printer.printItem("settings(st)", "Enters the program's settings menu.");
                     Printer.printItem("backup-profiles(bp)", "Enters the program's backup profiles menu.");
                     Printer.printItem("about", "Shows information about the program and the author.");
-                    Printer.printCustom("$BYFor guides and more on information on how  to use the program and where to find monitor plugins,\nvisit the wiki at $_Y" + WIKI_LINK);
+                    Printer.printCustom("$BYFor guides and more information on how to use the program,\nvisit the wiki at $_Y" + WIKI_LINK);
                     break;
                 case "list":
                 case "ls":

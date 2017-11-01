@@ -84,6 +84,7 @@ public class ServerCommandSchedulerTask extends Thread {
                 tc.setTask(null);
                 if (tc.getTime().getType().equals("ONETIME")) {
                     s.removeTimedCommand(tc);
+                    Storage.saveDataToFile();
                 }
             }, millis, TimeUnit.MILLISECONDS);
             Printer.printBackgroundInfo(pName, "The command " + tc.getCommand() + " for the server \"" + s.getName() + "\" will run in " + Timing.getDurationBreakdown(millis));
