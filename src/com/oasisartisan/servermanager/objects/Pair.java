@@ -2,7 +2,7 @@ package com.oasisartisan.servermanager.objects;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class Pair<K, V> {
 

@@ -15,7 +15,10 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public class BashProcessHandler implements ProcessHandler, Serializable {
 
     private static final String pName = "BashProcessHandler";

@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class ServerFileCommunicatorTask extends Thread {
 

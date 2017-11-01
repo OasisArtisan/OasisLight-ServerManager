@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public class BackupProfile implements Serializable {
 
     private List<String> excludeList;

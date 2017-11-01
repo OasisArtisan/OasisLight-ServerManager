@@ -4,7 +4,10 @@ import com.oasisartisan.servermanager.consolecommunication.Printer;
 import com.oasisartisan.servermanager.storage.Storage;
 import java.io.Serializable;
 import java.util.concurrent.Future;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public class TimedCommand implements Serializable {
 
     private Timing time;

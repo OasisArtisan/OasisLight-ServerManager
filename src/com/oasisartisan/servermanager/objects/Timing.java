@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.oasisartisan.servermanager.objects;
 
 import com.oasisartisan.servermanager.consolecommunication.Printer;
@@ -15,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class Timing implements Serializable {
 

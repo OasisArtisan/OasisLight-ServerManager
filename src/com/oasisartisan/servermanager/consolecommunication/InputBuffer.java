@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.oasisartisan.servermanager.consolecommunication;
 
 import com.oasisartisan.servermanager.Main;
@@ -15,7 +10,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class InputBuffer {
 

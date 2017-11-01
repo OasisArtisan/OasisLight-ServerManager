@@ -13,10 +13,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import static com.oasisartisan.servermanager.objects.ServerState.*;
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public class Server implements Serializable {
 
     private String name;

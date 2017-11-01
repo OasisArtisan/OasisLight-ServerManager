@@ -1,16 +1,13 @@
 package com.oasisartisan.servermanager.storage;
 
 import com.oasisartisan.servermanager.consolecommunication.Printer;
-import com.oasisartisan.servermanager.processhandlers.BashProcessHandler;
-import com.oasisartisan.servermanager.processhandlers.ProcessHandler;
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public final class Settings implements Serializable {
 

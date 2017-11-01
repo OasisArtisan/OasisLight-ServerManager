@@ -17,17 +17,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * @author OasisArtisan
  * Title: for a formatted headline. Prompt: for requesting input.
- * SuccessfullReply: for replies to input that are considered successful and
- * indicate no effect on data. FailedReply: for replies to input that are
- * considered a failure and indicate no effect on the data or runtime.
- * DataChange: for anything that holds changes to the data. (logged) Error: for
- * anything that is not supposed to happen normally. (logged) BackgroundInfo:
- * for informing the user about the processes running in the background such as
- * saving data or a server changing states. (logged) BackgroundSuccess: for
- * informing the user of a successful background process result. (logged)
- * BackgroundFail: for informing the user of a failed background process result.
- * (logged)
+ * SuccessfullReply: for replies to input that are considered successful and indicate no effect on data. 
+ * FailedReply: for replies to input that are considered a failure and indicate no effect on the data or runtime.
+ * DataChange: for anything that holds changes to the data. (logged) 
+ * Error: for anything that is not supposed to happen normally. (logged) 
+ * BackgroundInfo: for informing the user about the processes running in the background such as saving data or a server changing states. (logged) 
+ * BackgroundSuccess: for informing the user of a successful background process result. (logged)
+ * BackgroundFail: for informing the user of a failed background process result. (logged)
  */
 public class Printer {
 

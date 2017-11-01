@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class ShutDownTask extends Thread {
 

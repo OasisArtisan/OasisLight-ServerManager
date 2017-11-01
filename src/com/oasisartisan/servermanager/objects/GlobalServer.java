@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author Omar Alama
+ * @author OasisArtisan
  */
 public class GlobalServer extends Server {
 

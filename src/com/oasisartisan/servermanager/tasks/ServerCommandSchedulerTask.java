@@ -7,18 +7,15 @@ import com.oasisartisan.servermanager.objects.TimedCommand;
 import com.oasisartisan.servermanager.objects.Timing;
 import com.oasisartisan.servermanager.storage.Storage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class ServerCommandSchedulerTask extends Thread {
 

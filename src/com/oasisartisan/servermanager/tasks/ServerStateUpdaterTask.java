@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class ServerStateUpdaterTask extends Thread {
 

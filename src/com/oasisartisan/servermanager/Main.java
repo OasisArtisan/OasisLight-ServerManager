@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
+/**
+ *
+ * @author OasisArtisan
+ */
 public class Main {
 
     public static final String PROGRAM_NAME = "OasisLight-Server Manager";
@@ -106,13 +110,12 @@ public class Main {
         in.start();
         processHandler = new BashProcessHandler();
         try {
-        if (!processHandler.checkPrerequisites()) {
-            Printer.printPrompt("Hit 'Enter' to exit...");
-            Main.getIn().waitForEnter();
-            System.exit(0);
-        }
-        } catch(InterruptedException e)
-        {
+            if (!processHandler.checkPrerequisites()) {
+                Printer.printPrompt("Hit 'Enter' to exit...");
+                Main.getIn().waitForEnter();
+                System.exit(0);
+            }
+        } catch (InterruptedException e) {
             Printer.printError("Main", "Failed to check for prerequisites.", e);
             Printer.printPrompt("Hit 'Enter' to exit...");
             Main.getIn().waitForEnter();

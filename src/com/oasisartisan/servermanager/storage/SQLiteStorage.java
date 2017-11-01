@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class SQLiteStorage extends Storage {
 

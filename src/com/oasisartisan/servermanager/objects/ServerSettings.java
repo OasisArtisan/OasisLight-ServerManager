@@ -1,9 +1,11 @@
 package com.oasisartisan.servermanager.objects;
 
 import com.oasisartisan.servermanager.consolecommunication.Printer;
-import com.oasisartisan.servermanager.storage.Storage;
 import java.io.Serializable;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public class ServerSettings implements Serializable {
 
     private String stopCommand;

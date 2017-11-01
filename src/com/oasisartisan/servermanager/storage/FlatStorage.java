@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.oasisartisan.servermanager.storage;
 
-import com.oasisartisan.servermanager.Utilities;
 import com.oasisartisan.servermanager.consolecommunication.Printer;
 import com.oasisartisan.servermanager.objects.GlobalServer;
 import com.oasisartisan.servermanager.objects.TimedCommand;
@@ -20,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author OmarAlama
+ * @author OasisArtisan
  */
 public class FlatStorage extends Storage {
 

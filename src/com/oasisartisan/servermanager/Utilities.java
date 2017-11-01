@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ *
+ * @author OasisArtisan
+ */
 public class Utilities {
 
     public static ArrayList<String> listStream(InputStream stream) throws IOException {

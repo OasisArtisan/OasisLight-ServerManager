@@ -10,7 +10,10 @@ import com.oasisartisan.servermanager.objects.Server;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public abstract class Storage {
 
     protected static final String path = "smdata";

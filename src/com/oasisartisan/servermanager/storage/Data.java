@@ -7,7 +7,10 @@ import com.oasisartisan.servermanager.objects.TimedCommand;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ *
+ * @author OasisArtisan
+ */
 public class Data implements Serializable {
 
     private HashMap<String, Server> serverList;
