@@ -1,3 +1,4 @@
+![](https://github.com/OasisArtisan/OasisLight-ServerManager/blob/master/OasisLight_Banner-01.png?raw=true)
 # OasisLight | Linux Server Manager
 A light weight java program for linux users that makes managing and monitoring servers (MC servers in particular) extremely easy.
 
