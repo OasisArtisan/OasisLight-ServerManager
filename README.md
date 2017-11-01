@@ -11,7 +11,11 @@ A light weight java program for linux users that makes managing and monitoring s
 - A global control panel to restart, backup, send a command to all servers with one command.
 - Extremely light as it can run on as little as 5MB of RAM for medium sized networks.
 - The manager can be used alongside a small server plugin to detect unresponsive states and to recieve player counts,ram usage etc.
-
+## Screenshots
+Adding servers.
+![](https://github.com/OasisArtisan/OasisLight-ServerManager/blob/master/Screenshots/Adding_Servers.png?raw=true)
+The Monitor showing servers linked to the SMMonitor spigot plugin.
+![](https://github.com/OasisArtisan/OasisLight-ServerManager/blob/master/Screenshots/Monitor.png?raw=true)
 ## Getting started
 ### Starting the manager
 After downloading the jar simply run it with a basic java command specifying the maximum ram if prefered.
