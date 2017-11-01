@@ -61,4 +61,5 @@ To open the server's console open a new terminal and type `screen -x servername`
 - [x] Add a global panel for controlling all servers at once.
 - [ ] Determine unresponsive states without using a plugin.
 - [ ] Enable raw input mode which will allow command history and writing commands in the monitor screen.
+- [ ] Add support for windows.
 - [ ] Add A GUI.
