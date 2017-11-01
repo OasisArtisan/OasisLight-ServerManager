@@ -38,7 +38,7 @@ Now that you started the manager you should keep these commands in mind which wo
 - **clear** Whenever you feel like the screen is filled with old output use clear to clear your screen and show you the current active menu.
 - **quit** you can quit the program from any place in the manager this is the equivelant of `ctrl + c`.
 Note: quiting the manager does not stop any servers. it simply stops all the services and schedualed commands the manager provides.
-
+- A helpful thing to keep in mind is that most long commands have a shortcut for using them (Ex. `timedcommands` can be accessed by `tc`)
 ### Adding your first server
 - Make sure that the server is offline.
 - Use the command `add` from the main menu.
