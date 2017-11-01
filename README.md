@@ -1,5 +1,5 @@
 # OasisLight | Linux Server Manager
-A light weight java console program for linux users that makes managing and monitoring servers extremely easy.
+A light weight java program for linux users that makes managing and monitoring servers (MC servers in particular) extremely easy.
 
 ## Features
 - The manager is open source and free to use for as many servers and as many players as you like
