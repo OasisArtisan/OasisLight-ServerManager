@@ -56,7 +56,7 @@ An important thing to note is that the manager was initially made to be used lin
 - All linux distributions that have the 4 prerequisites installed.
 
 ## Support
-- If you are having any issues in setting up the manager feel free to [join the discord server](https://discord.gg/cHFMXGz) and ask me directly.
+- If you are having any issues in setting up the manager feel free to [join the discord server](https://discord.gg/FejR9tv) and ask me directly.
 - If you think there is a bug in the code open an issue on the issue page on github
 - If you want to suggest improvements or request features to be added, preferrably open an issue with the tag [suggestion] in the title. or message me on discord.
 
