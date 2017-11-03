@@ -32,7 +32,6 @@ public class Server implements Serializable {
     private transient ServerState state;
     private transient Thread currentThread;
     private transient boolean restarting;
-    private transient boolean stopping;
     public transient boolean ignorePing = false;
     
     //Backup variables
@@ -161,6 +160,10 @@ public class Server implements Serializable {
                 try {
                     ProcessHandler ph = Main.getProcessHandler();
                     Process p = ph.killServerProcess(server, true);
+                    if(p == null)
+                    {
+                        return;
+                    }
                     Utilities.printStream(p.getErrorStream());
                     ProcessHandler.finishProcess(p, name + " >> KILL(15)");
                     Thread.sleep(5000);
@@ -329,17 +332,17 @@ public class Server implements Serializable {
                 endCurrentThread();
             }
         }
-        boolean wasStopping = this.state == STOPPING;
         if (this.state != state) {
+            boolean wasStopping = this.state == STOPPING || this.state == TERMINATING;
             Printer.printBackgroundInfo(name, "Server is now \"" + state.toString() + "\".");
             this.state = state;
-        }
-        if (this.state == NOTRESPONDING && settings.isRestartIfNotResponding()) {
-            restart();
-        } else if (this.state == OFFLINE && ((!wasStopping && settings.isStartIfOffline()) || restarting)) {
-            start();
-            if (restarting) {
-                restarting = false;
+            if (this.state == NOTRESPONDING && settings.isRestartIfNotResponding()) {
+                restart();
+            } else if (this.state == OFFLINE && ((!wasStopping && settings.isStartIfOffline()) || restarting)) {
+                start();
+                if (restarting) {
+                    restarting = false;
+                }
             }
         }
     }

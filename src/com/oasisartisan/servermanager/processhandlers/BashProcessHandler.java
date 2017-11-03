@@ -172,7 +172,8 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
             }
         }
         if (cmd.size() != 3) {
-            Printer.printError(pName, "The server \"" + server.getName() + "\" has no process to be killed", null);
+            //Printer.printError(pName, "The server \"" + server.getName() + "\" has no process to be killed", null);
+            return null;
         }
         return exec(cmd);
     }

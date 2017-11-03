@@ -155,7 +155,7 @@ public final class Settings implements Serializable {
         Printer.printItem("(4) Monitor Messages Duration", monitorMessagesDuration + "");
         Printer.printItem("(5) Command scheduler task interval", commandSchedulerTaskInterval + "");
         Printer.printItem("(6) Use colors in console", useConsoleColors + "");
-        Printer.printItem("(7) Clear console when openning a new menu", clearConsoleBeforeMenu + "");
+        Printer.printItem("(7) Clear console when opening a new menu", clearConsoleBeforeMenu + "");
         Printer.printItem("(8) Log output", logOutput + "");
         Printer.printItem("(9) Print background info to console", printBackgroundInfoToConsole + "");
         Printer.printItem("(10) Print time stamps on background info in console", backgroundInfoTimeStampsInConsole + "");

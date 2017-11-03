@@ -1184,6 +1184,7 @@ public class Main {
                         if (input.equalsIgnoreCase("null")) {
                             bp.setDir(null);
                             Printer.printDataChange(pName, "The save directory has been changed to \"null\".");
+                            break;
                         }
                         File f = new File(input);
                         if (f.isFile()) {
@@ -1229,7 +1230,7 @@ public class Main {
 
     public static void StringListEditor(String pName, List<String> ls) {
         while (true) {
-            boolean printItems = activeMenu == null || !activeMenu.getK().equals(pName);
+            boolean printItems = activeMenu == null || !activeMenu.getK().equals(pName + " Editor");
             changeMenu(pName + " Editor", "STRING_LIST_EDITOR");
             if (printItems) {
                 for (int i = 0; i < ls.size(); i++) {
