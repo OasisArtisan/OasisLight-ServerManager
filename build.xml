@@ -81,7 +81,7 @@
 
         <!-- don't edit below this line -->
 
-        <property name="store.dir" value="D:/VirtualBox VMs/Linux Ubunto/Shared"/>
+        <property name="store.dir" value="Store"/>
         <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
 
         <echo message="Packaging ${application.title} into a single JAR at ${store.jar}"/>
