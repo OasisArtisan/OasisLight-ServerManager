@@ -171,6 +171,6 @@ public class Utilities {
 
     public static String getDateStamp() {
         Calendar c = Calendar.getInstance();
-        return c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
+        return c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
     }
 }
