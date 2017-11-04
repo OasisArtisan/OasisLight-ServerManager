@@ -9,7 +9,7 @@ A light weight java program for linux users that makes managing and monitoring s
 - Custom full backups of all your servers to a minimal compressed size.
 - Scheduale periodic restarts, backups, announcements, or any console command for any server.
 - A customizable monitor screen that displays all of your servers and their status in one place.
-- A global control panel to restart, backup, send a command to all servers with one command.
+- A global control panel to restart, backup, and send a command to all servers with one command.
 - Extremely light as it can run on as little as 5MB of RAM for medium sized networks.
 - The manager can be used alongside a small server plugin to detect unresponsive states and to recieve player counts,ram usage etc.
 ## Screenshots
