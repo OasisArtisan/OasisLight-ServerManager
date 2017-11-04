@@ -160,7 +160,7 @@ public class Printer {
 
     public static void printCustom(String message) {
         String out;
-        if (Storage.getSettings().isUseConsoleColors()) {
+        if (Storage.getSettings() != null && Storage.getSettings().isUseConsoleColors()) {
             out = translateColorCodes(message) + RESET;
         } else {
             out = Colors.stripColorCodes(message);
