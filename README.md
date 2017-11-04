@@ -26,7 +26,7 @@ java -Xmx5M -jar /.../.../ServerManager.jar
 ```
 If the manager fails to start, Make sure you the following prerequisites installed:
 - JAVA
-- JPS
+- JPS ([you can find here](http://openjdk.java.net/install/))
 - SCREEN
 - ZIP
 
