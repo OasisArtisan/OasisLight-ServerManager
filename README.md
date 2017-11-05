@@ -34,7 +34,7 @@ To check, simply type the command followed by `--help`. If the command is not in
 
 ### Essential commands
 Now that you started the manager you should keep these commands in mind which work in almost all of the manager menus
-- **help** never you feel yourself lost on where you are or what commands do always type help.
+- **help** whenever you feel yourself lost on where you are or what commands do always type help.
 - **back** You can always back out of any menu or any process so make sure to use it whenever stuck.
 - **clear** Whenever you feel like the screen is filled with old output use clear to clear your screen and show you the current active menu.
 - **quit** you can quit the program from any place in the manager this is the equivelant of `ctrl + c`.
