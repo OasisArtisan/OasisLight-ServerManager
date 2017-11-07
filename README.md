@@ -67,3 +67,7 @@ An important thing to note is that the manager was initially made to be used lin
 - [ ] Enable raw input mode which will allow command history and writing commands in the monitor screen.
 - [ ] Add support for windows.
 - [ ] Add A GUI.
+
+If you found the manager useful and want to support its development consider donating or starring the repository. All is appreciated.
+
+[![](https://proxy.spigotmc.org/8d6bb1a6b7ff7f4b68990696fd69823be7565a44?url=https%3A%2F%2Fwww.paypalobjects.com%2Fwebstatic%2Fen_US%2Fi%2Fbtn%2Fpng%2Fbtn_donate_92x26.png)](https://proxy.spigotmc.org/8d6bb1a6b7ff7f4b68990696fd69823be7565a44?url=https%3A%2F%2Fwww.paypalobjects.com%2Fwebstatic%2Fen_US%2Fi%2Fbtn%2Fpng%2Fbtn_donate_92x26.png)
