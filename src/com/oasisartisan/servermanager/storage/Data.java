@@ -26,9 +26,6 @@ public class Data implements Serializable {
     }
 
     public HashMap<String, Server> getServerList() {
-        for (Server s : serverList.values()) {
-            s.initializeState();
-        }
         return serverList;
     }
 

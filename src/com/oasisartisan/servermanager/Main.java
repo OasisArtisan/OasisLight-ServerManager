@@ -801,12 +801,12 @@ public class Main {
                     break;
                 case "3":
                     server.getSettings().toggleStartIfOffline();
-                    Printer.printSuccessfullReply(pName, "Start if offline has been set to " + server.getSettings().isStartIfOffline());
+                    Printer.printDataChange(pName, "Start if offline has been set to " + server.getSettings().isStartIfOffline());
 
                     break;
                 case "4":
                     server.getSettings().toggleRestartIfNotResponding();
-                    Printer.printSuccessfullReply(pName, "Restart if not responding has been set to " + server.getSettings().isRestartIfNotResponding());
+                    Printer.printDataChange(pName, "Restart if not responding has been set to " + server.getSettings().isRestartIfNotResponding());
 
                     break;
                 case "5":

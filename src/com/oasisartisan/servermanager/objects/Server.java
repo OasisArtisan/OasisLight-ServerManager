@@ -46,7 +46,6 @@ public class Server implements Serializable {
         this.name = name;
         this.file = new File(path);
         timedCommands = new ArrayList();
-        initializeState();
         settings = new ServerSettings();
         linked = false;
         backupOutput = new String[2];
@@ -334,7 +333,7 @@ public class Server implements Serializable {
         }
         if (this.state != state) {
             boolean wasStopping = this.state == STOPPING || this.state == TERMINATING;
-            Printer.printBackgroundInfo(name, "Server is now \"" + state.toString() + "\".");
+            Printer.printBackgroundInfo(name, "Server is \"" + state.toString() + "\".");
             this.state = state;
             if (this.state == NOTRESPONDING && settings.isRestartIfNotResponding()) {
                 restart();
@@ -476,11 +475,6 @@ public class Server implements Serializable {
         }
     }
 
-    public void initializeState() {
-        if (state == null) {
-            state = OFFLINE;
-        }
-    }
 
     public ServerState getState() {
         return state;
