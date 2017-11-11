@@ -34,7 +34,7 @@ To check, simply type the command followed by `--help`. If the command is not in
 
 ### Essential commands
 Now that you started the manager you should keep these commands in mind which work in almost all of the manager menus
-- **help** never you feel yourself lost on where you are or what commands do always type help.
+- **help** whenever you feel yourself lost on where you are or what commands do always type help.
 - **back** You can always back out of any menu or any process so make sure to use it whenever stuck.
 - **clear** Whenever you feel like the screen is filled with old output use clear to clear your screen and show you the current active menu.
 - **quit** you can quit the program from any place in the manager this is the equivelant of `ctrl + c`.
@@ -67,3 +67,7 @@ An important thing to note is that the manager was initially made to be used lin
 - [ ] Enable raw input mode which will allow command history and writing commands in the monitor screen.
 - [ ] Add support for windows.
 - [ ] Add A GUI.
+
+If you found the manager useful and want to support its development consider donating or starring the repository. All is appreciated.
+
+[![](https://proxy.spigotmc.org/8d6bb1a6b7ff7f4b68990696fd69823be7565a44?url=https%3A%2F%2Fwww.paypalobjects.com%2Fwebstatic%2Fen_US%2Fi%2Fbtn%2Fpng%2Fbtn_donate_92x26.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=omaralama31@yahoo.com&item_name=Donation&item_number=Oasis+Light+Server+Manager&currency_code=USD)
