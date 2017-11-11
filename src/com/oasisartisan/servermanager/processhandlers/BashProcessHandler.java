@@ -223,7 +223,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
             dirFile.mkdirs();
         }
         for (File f : dirFile.listFiles()) {
-            if (f.getName().contains(bp.getName() + "_" + s.getName()) && f.getName().endsWith(".zip")) {
+            if (f.getName().contains(bp.getName() + "_" + s.getName() + "_") && f.getName().endsWith(".zip")) {
                 f.renameTo(new File(name));
                 break;
             }
