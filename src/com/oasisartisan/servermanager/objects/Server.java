@@ -151,6 +151,10 @@ public class Server implements Serializable {
         if (state == OFFLINE) {
             Printer.printBackgroundFail(name, "Could not kill server. It is already offline.");
             return false;
+        } else if (state == TERMINATING)
+        {
+            Printer.printBackgroundFail(name, "Could not kill server. It is already TERMINATING.");
+            return false;
         }
         endCurrentThread();
         Server server = this;
