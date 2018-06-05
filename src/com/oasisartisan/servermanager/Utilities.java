@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -157,7 +156,7 @@ public class Utilities {
     }
 
     public static String readLocalFile(String path) {
-        InputStream is = Class.class.getResourceAsStream("/" + path);
+        InputStream is = Main.class.getResourceAsStream("/" + path);
         Scanner sc = new Scanner(is);
         String s = "";
         while (sc.hasNextLine()) {

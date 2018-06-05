@@ -88,7 +88,7 @@ public class ServerFileCommunicatorTask extends Thread {
                     synchronized (serverList) {
                         server = serverList.get(name);
                     }
-                    //if there is a server represented bu this file then atempt to update its monitor data because it has changed.
+                    //if there is a server represented by this file then atempt to update its monitor data because it has changed.
                     if (server != null) {
                         updateServerMonitorData(server);
                         checkHistory.put(name, System.currentTimeMillis());

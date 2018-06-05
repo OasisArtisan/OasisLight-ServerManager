@@ -103,7 +103,7 @@ public class ServerSettings implements Serializable {
         Printer.printItem("(3) Start if offline", startIfOffline + "");
         Printer.printItem("(4) Restart if not responding", restartIfNotResponding + "");
         Printer.printItem("(5) Max starting duration", maxStartingDuration + "");
-        Printer.printItem("(6) Max stoping duration", maxStoppingDuration + "");
+        Printer.printItem("(6) Max stopping duration", maxStoppingDuration + "");
         Printer.printItem("(7) Stop command", stopCommand + "");
     }
 }

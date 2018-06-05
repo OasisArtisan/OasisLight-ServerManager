@@ -18,6 +18,7 @@ public class ServerStateUpdaterTask extends Thread {
     public static final String path = "lmsm-data";
     public static final String pName = "StateUpdater";
     private static long interval;
+    private ArrayList<String> runningProcesses;
 
     @Override
     public void run() {
@@ -32,8 +33,8 @@ public class ServerStateUpdaterTask extends Thread {
             while (true) {
                 //To start we get the screens that are currently running
                 try {
-                    ArrayList<String> runningProcesses = Main.getProcessHandler().listProcesses();
-
+                    runningProcesses = Main.getProcessHandler().listProcesses();
+                    
                     //We itterate over every server registered
                     HashMap<String, Server> serverList = Storage.getServerList();
                     synchronized (serverList) {
@@ -65,8 +66,11 @@ public class ServerStateUpdaterTask extends Thread {
                             }
                         }
                     }
+                    synchronized(this) {
+                        this.notifyAll();
+                    }
                 } catch (IOException e) {
-                    Printer.printError(pName, "Cannot update server states. Failed to list running screens.", e);
+                    Printer.printError(pName, "Cannot update server states. Failed to list running processes.", null);
                 }
                 Thread.sleep(interval);
                 long newInterval = Storage.getSettings().getServerStateUpdaterTaskInterval();
@@ -81,4 +85,9 @@ public class ServerStateUpdaterTask extends Thread {
             Printer.printError(pName, "An unexpected error occured.", e);
         }
     }
+
+    public ArrayList<String> getRunningProcesses() {
+        return runningProcesses;
+    }
+    
 }

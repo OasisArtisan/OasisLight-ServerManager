@@ -184,7 +184,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
         cmd.add("jps");
         cmd.add("-m");
         Process p = exec(cmd);
-        ProcessHandler.finishProcess(p, "BashProcessHandler >> listProcesses");
+        ProcessHandler.finishProcess(p, "BashProcessHandler >> listProcesses",15);
         return Utilities.listStream(p.getInputStream());
     }
 
@@ -326,7 +326,7 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
         cmd.add("screen");
         cmd.add("-ls");
         Process p = exec(cmd);
-        ProcessHandler.finishProcess(p, "BashProcessHandler >> listScreens");
+        ProcessHandler.finishProcess(p, "BashProcessHandler >> listScreens", 10);
         return Utilities.listStream(p.getInputStream());
     }
 }

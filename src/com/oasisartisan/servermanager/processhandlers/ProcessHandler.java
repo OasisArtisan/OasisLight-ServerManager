@@ -36,10 +36,11 @@ public interface ProcessHandler {
 
     public void waitForKeyPress();
 
-    public static boolean finishProcess(Process p, String pname) throws InterruptedException{
+    public static boolean finishProcess(Process p, String pname, long timeout) throws InterruptedException{
         boolean interrupted = false;
         try {
-            p.waitFor(10, TimeUnit.SECONDS);
+            Printer.log("[" + pname + "] Starting process.", null);
+            p.waitFor(timeout, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             interrupted = true;
             p.destroy();
@@ -56,6 +57,7 @@ public interface ProcessHandler {
             {
                 throw new InterruptedException();
             }
+            Printer.log("[" + pname + "] Finished process successfully.", null);
             return true;
         } else {
             p.destroyForcibly();

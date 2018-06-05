@@ -25,7 +25,7 @@ public final class Settings implements Serializable {
     private boolean backgroundInfoTimeStampsInConsole;
 
     private String storageType;
-
+        
     public Settings() {
         saveDefault();
     }

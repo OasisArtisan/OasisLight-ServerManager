@@ -3,7 +3,6 @@ package com.oasisartisan.servermanager.objects;
 import com.oasisartisan.servermanager.Main;
 import com.oasisartisan.servermanager.consolecommunication.Printer;
 import com.oasisartisan.servermanager.tasks.ServerCommandSchedulerTask;
-import com.oasisartisan.servermanager.Utilities;
 import com.oasisartisan.servermanager.processhandlers.ProcessHandler;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +29,7 @@ public class Server implements Serializable {
     private boolean linked;
     private transient ArrayList<String> customMessages;
     private transient ServerState state;
+    
     private transient Thread currentThread;
     private transient boolean restarting;
     public transient boolean ignorePing = false;
@@ -67,10 +67,11 @@ public class Server implements Serializable {
         }
         Server server = this;
         currentThread = new Thread() {
+            @Override
             public void run() {
                 try {
                     Process p = Main.getProcessHandler().startServerProcess(server);
-                    ProcessHandler.finishProcess(p, name + " >> START");
+                    ProcessHandler.finishProcess(p, name + " >> START", 10);
                     try {
                         Thread.sleep(server.getSettings().getMaxStartingDuration());
                         if (server.getState() == STARTING) {
@@ -95,7 +96,7 @@ public class Server implements Serializable {
     }
 
     public synchronized boolean restart() {
-        Printer.printBackgroundInfo(name, "Atempting to restart the server.");
+        Printer.printBackgroundInfo(name, "Attempting to restart the server.");
         if (state == OFFLINE) {
             return start();
         }
@@ -105,16 +106,16 @@ public class Server implements Serializable {
     }
 
     public synchronized boolean stop() {
-        Printer.printBackgroundInfo(name, "Atempting to stop the server.");
+        Printer.printBackgroundInfo(name, "Attempting to stop the server.");
         if (currentThread != null) {
             Printer.printBackgroundFail(name, "Could not stop server. Another process is currently ongoing.");
             return false;
         }
-        if (state == NOTRESPONDING) {
+        if (state == TERMINATING) {
             return kill();
         }
-        if (state != ONLINE) {
-            Printer.printBackgroundFail(name, "Could not stop server. It should be online or not responding to stop.");
+        if (state != ONLINE && state != NOTRESPONDING) {
+            Printer.printBackgroundFail(name, "Could not stop server. It is " + state);
             return false;
         }
         Server server = this;
@@ -123,17 +124,21 @@ public class Server implements Serializable {
             public void run() {
                 try {
                     Process p = Main.getProcessHandler().sendCommandToServer(server, server.getSettings().getStopCommand());
-                    ProcessHandler.finishProcess(p, name + " >> STOP");
+                    ProcessHandler.finishProcess(p, name + " >> STOP", 10);
                     try {
                         Thread.sleep(server.getSettings().getMaxStoppingDuration());
                         if (server.getState() == STOPPING) {
-                            Printer.printBackgroundFail(server.getName(), "Server failed to stop in time. Killing the server session!");
+                            Printer.printBackgroundFail(server.getName(), "Server failed to stop in time. Killing the server process!");
                             server.kill();
                         }
                     } catch (InterruptedException e) {
                     }
-                } catch (IOException e) {
-                    Printer.printError(server.getName(), "Failed to send stop command to the server.", e);
+                } catch (IOException | NullPointerException e) {
+                    Printer.printError(server.getName(), "Failed to send stop command to the server.\nMake sure that you have started the server using the manager !", e);
+                    if (server.getState() == STOPPING) {
+                        Printer.printBackgroundFail(server.getName(), "Killing the server process!");
+                        server.kill();
+                    }
                 } catch (Exception e) {
                     Printer.printError("stop-" + name, "An unexpected error occured.", e);
                 }
@@ -147,37 +152,54 @@ public class Server implements Serializable {
     }
 
     public synchronized boolean kill() {
-        Printer.printBackgroundInfo(name, "Atempting to kill the server.");
+        Printer.printBackgroundInfo(name, "Attempting to kill the server.");
         if (state == OFFLINE) {
             Printer.printBackgroundFail(name, "Could not kill server. It is already offline.");
             return false;
-        } else if (state == TERMINATING)
+        } else if (state == TERMINATING && currentThread != null)
         {
             Printer.printBackgroundFail(name, "Could not kill server. It is already TERMINATING.");
             return false;
         }
         endCurrentThread();
         Server server = this;
-        currentThread = new Thread() {
+        currentThread = new Thread()
+        {
+            @Override
             public void run() {
                 try {
+                    long wait = 3000;
                     ProcessHandler ph = Main.getProcessHandler();
-                    Process p = ph.killServerProcess(server, true);
-                    if(p == null)
-                    {
-                        return;
-                    }
-                    Utilities.printStream(p.getErrorStream());
-                    ProcessHandler.finishProcess(p, name + " >> KILL(15)");
-                    Thread.sleep(5000);
-                    if (ph.hasActiveProcess(server)) {
-                        p = ph.killServerProcess(server, false);
-                        Utilities.printStream(p.getErrorStream());
-                        ProcessHandler.finishProcess(p, name + " >> KILL(9)");
-                    }
-                    Thread.sleep(3000);
-                    if (ph.hasActiveProcess(server)) {
-                        Printer.printError(server.getName(), "Failed to kill the server process", null);
+                    Process p;
+                    boolean firstTry = true;
+                    while (true) {
+                        try {
+                            if (firstTry) {
+                                p = ph.killServerProcess(server, true);
+                                if (p == null) {
+                                    break;
+                                }
+                                ProcessHandler.finishProcess(p, name + " >> KILL(15)", 15);
+                                firstTry = false;
+                            }
+                            long time = System.currentTimeMillis();
+                            while (System.currentTimeMillis() - time < wait) {
+                                synchronized (Main.getServerStateUpdaterTask()) {
+                                    Main.getServerStateUpdaterTask().wait();
+                                }
+                            }
+                            Printer.printBackgroundInfo(name, "Retrying to kill the server process...");
+                            p = ph.killServerProcess(server, false);
+                            if (p == null) {
+                                break;
+                            }
+                            ProcessHandler.finishProcess(p, name + " >> KILL(9)", 20);
+                            Thread.sleep(3000);
+                            Printer.printError(name, "Possibly failed to kill the server process.", null);
+                        } catch (IOException | NullPointerException e) {
+                            Printer.printError(name, "Possibly failed to kill the server process.", null);
+                        }
+                        wait *= 2;
                     }
                 } catch (InterruptedException e) {
 
@@ -193,11 +215,11 @@ public class Server implements Serializable {
         return true;
     }
 
-    public boolean sendCommand(String command) {
+    public synchronized boolean sendCommand(String command) {
         if (state == ONLINE || state == NOTRESPONDING) {
             try {
                 Process p = Main.getProcessHandler().sendCommandToServer(this, command);
-                if (ProcessHandler.finishProcess(p, name + " >> SEND")) {
+                if (ProcessHandler.finishProcess(p, name + " >> SEND", 10)) {
                     Printer.printBackgroundSuccess(name, "Successfuly sent command \"" + command + "\" to the server.");
                 }
                 return false;
@@ -213,13 +235,14 @@ public class Server implements Serializable {
     }
 
     public boolean backup(BackupProfile bp) {
-        if(backupThread != null) {
+        if (backupThread != null) {
             Printer.printBackgroundFail(name, "Could not backup server. Another backup process is currently ongoing.");
             return false;
         }
-        String pName = "backup-" +name + ":" + bp.getName();
+        String pName = "backup-" + name + ":" + bp.getName();
         Server s = this;
-        backupThread = new Thread() {
+        backupThread = new Thread()
+        {
             @Override
             public void run() {
                 Printer.printBackgroundInfo(pName, "Starting backup process.");
@@ -329,9 +352,9 @@ public class Server implements Serializable {
 
     public synchronized void setState(ServerState state) {
         if (currentThread != null) {
-            if ((state != STARTING && currentThread.getName().equals("start-" + name))
-                    || (state != STOPPING && currentThread.getName().equals("stop-" + name))
-                    || (state == OFFLINE && currentThread.getName().equals("kill-" + name))) {
+            if (       (state != STARTING && currentThread.getName().equals("start-" + name))
+                    || (state != STOPPING && currentThread.getName().equals("stop-"  + name))
+                    || (state == OFFLINE  && currentThread.getName().equals("kill-"  + name))) {
                 endCurrentThread();
             }
         }

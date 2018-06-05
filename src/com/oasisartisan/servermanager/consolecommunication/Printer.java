@@ -1,5 +1,6 @@
 package com.oasisartisan.servermanager.consolecommunication;
 
+import com.oasisartisan.utils.Colors;
 import com.oasisartisan.servermanager.Main;
 import com.oasisartisan.servermanager.storage.Storage;
 import java.io.File;
@@ -9,8 +10,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Locale;
-import static com.oasisartisan.servermanager.consolecommunication.Colors.*;
-import com.oasisartisan.servermanager.objects.Pair;
+import static com.oasisartisan.utils.Colors.*;
+import com.oasisartisan.utils.objects.Pair;
 import static com.oasisartisan.servermanager.objects.ServerState.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -308,7 +309,7 @@ public class Printer {
         return "[" + hour + ":" + minute + ":" + second + "]";
     }
 
-    private static void log(String msg, Exception e) {
+    public static void log(String msg, Exception e) {
         if (Storage.getSettings() == null || Storage.getSettings().isLogOutput()) {
             if (!logDirectory.isDirectory()) {
                 logDirectory.mkdir();
