@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- *
+ * @deprecated 
  * @author OasisArtisan
  */
 public class SQLiteStorage extends Storage {

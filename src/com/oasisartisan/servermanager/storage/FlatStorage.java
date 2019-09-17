@@ -13,7 +13,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 /**
- *
+ * @deprecated 
  * @author OasisArtisan
  */
 public class FlatStorage extends Storage {

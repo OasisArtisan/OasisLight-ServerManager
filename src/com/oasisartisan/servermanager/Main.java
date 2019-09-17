@@ -51,13 +51,13 @@ public class Main {
         MENUS = new HashMap();
         String[] MAIN = {"open", "list", "add", "remove", "monitor", "settings", "backup-profiles", "about", "help"};
         MENUS.put("MAIN", MAIN);
-        String[] SETTINGS = {"info", "1-9", "default", "help ", "back"};
+        String[] SETTINGS = {"info", "1-11", "default", "help ", "back"};
         MENUS.put("SETTINGS", SETTINGS);
         String[] SERVER = {"start", "stop", "kill", "restart", "send", "backup", "timedcommands", "settings", "info", "help", "back"};
         MENUS.put("SERVER", SERVER);
-        String[] SERVER_SETTINGS = {"rename", "path", "link", "unlink", "1-6", "info", "help", "back"};
+        String[] SERVER_SETTINGS = {"rename", "path", "link", "unlink", "1-9", "info", "help", "back"};
         MENUS.put("SERVER_SETTINGS", SERVER_SETTINGS);
-        String[] GLOBAL_SERVER_SETTINGS = {"link", "unlink", "1-6", "info", "help", "back"};
+        String[] GLOBAL_SERVER_SETTINGS = {"link", "unlink", "1-9", "info", "help", "back"};
         MENUS.put("GLOBAL_SERVER_SETTINGS", GLOBAL_SERVER_SETTINGS);
         String[] TIMED_COMMANDS = {"add", "remove", "list", "help", "back"};
         MENUS.put("TIMED_COMMANDS", TIMED_COMMANDS);
@@ -415,28 +415,28 @@ public class Main {
 
                     break;
                 case "11":
-
-                    out:
-                    while (true) {
-                        Printer.printPrompt("Choose one of the following ");
-                        String s = "| ";
-                        for (String type : Storage.getStorageTypes().keySet()) {
-                            s += type + " | ";
-                        }
-                        Printer.printPrompt(s);
-                        input = in.next();
-                        if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
-                            break;
-                        }
-                        for (String type : Storage.getStorageTypes().keySet()) {
-                            if (input.equals(type)) {
-                                Storage.getSettings().setStorageType(type);
-                                Printer.printDataChange(pName, "Storage type has been changed to \"" + type + "\".");
-                                break out;
-                            }
-                        }
-                        Printer.printFailedReply("\"" + input + "\" is not a valid option.");
-                    }
+                    Printer.printFailedReply(pName, "Changing storage method has been disabled in version 1.2. Only JSON storage is available. If you think the manager should have more options, please contact us.");
+//                    out:
+//                    while (true) {
+//                        Printer.printPrompt("Choose one of the following ");
+//                        String s = "| ";
+//                        for (String type : Storage.getStorageTypes().keySet()) {
+//                            s += type + " | ";
+//                        }
+//                        Printer.printPrompt(s);
+//                        input = in.next();
+//                        if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
+//                            break;
+//                        }
+//                        for (String type : Storage.getStorageTypes().keySet()) {
+//                            if (input.equals(type)) {
+//                                Storage.getSettings().setStorageType(type);
+//                                Printer.printDataChange(pName, "Storage type has been changed to \"" + type + "\".");
+//                                break out;
+//                            }
+//                        }
+//                        Printer.printFailedReply("\"" + input + "\" is not a valid option.");
+//                    }
                     break;
                 case "default":
                 case "d":
@@ -634,7 +634,7 @@ public class Main {
                 case "b":
                     return;
                 default:
-                    Printer.printFailedReply("Command: " + input + " not identified type help to list available commands.");
+                    Printer.printFailedReply("Command \"" + input + "\" not identified type help to list available commands.");
             }
         }
     }
@@ -852,7 +852,36 @@ public class Main {
                     input = in.nextLine();
                     server.getSettings().setStopCommand(input);
                     Printer.printDataChange(pName, "The stop command has been changed successfully to \"" + input + "\".");
-
+                    break;
+                case "8":
+                    Printer.printPrompt("Do not change this unless you know what you are doing!");
+                    Printer.printPrompt("Enter the new custom java arguments");
+                    input = in.nextLine();
+                    if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
+                        break;
+                    }
+                    if (input.equals("null")) {
+                        server.getSettings().setCustomJavaArgs(null);
+                        Printer.printDataChange(pName, "Custom java arguments have been cleared.");
+                        break;
+                    }
+                    server.getSettings().setCustomJavaArgs(input);
+                    Printer.printDataChange(pName, "Custom java arguments has been changed successfully to \"" + input + "\".");
+                    break;
+                case "9":
+                    while (true) {
+                        Printer.printPrompt("Enter the new java path");
+                        input = in.next();
+                        if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
+                            break;
+                        }
+                        if(processHandler.checkJavaPath(input)) {
+                            server.getSettings().setJavaPath(input);
+                            Printer.printDataChange(pName, "Java path has been changed successfully to \"" + input + "\".");
+                            break;
+                        }
+                        Printer.printFailedReply(pName, "\"" + input + "\" is not a valid java path");
+                    }
                     break;
                 case "info":
                 case "i":

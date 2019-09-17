@@ -2,6 +2,7 @@ package com.oasisartisan.servermanager.objects;
 
 import com.oasisartisan.servermanager.consolecommunication.Printer;
 import java.io.Serializable;
+import java.util.ArrayList;
 /**
  *
  * @author OasisArtisan
@@ -11,6 +12,9 @@ public class ServerSettings implements Serializable {
     private String stopCommand;
     private String startRam;
     private String maxRam;
+    private String customJavaArgs;
+    private String javaPath;
+
     private boolean startIfOffline;
     private boolean restartIfNotResponding;
 
@@ -21,6 +25,7 @@ public class ServerSettings implements Serializable {
         maxStartingDuration = 90000;
         maxStoppingDuration = 30000;
         stopCommand = "stop";
+        javaPath = "java";
     }
 
     public String getStopCommand() {
@@ -96,6 +101,22 @@ public class ServerSettings implements Serializable {
 
     }
 
+    public String getJavaPath() {
+        return javaPath;
+    }
+
+    public void setJavaPath(String customJavaPath) {
+        this.javaPath = customJavaPath;
+    }
+
+    public String getCustomJavaArgs() {
+        return customJavaArgs;
+    }
+
+    public void setCustomJavaArgs(String customJavaArgs) {
+        this.customJavaArgs = customJavaArgs;
+    }
+    
     public void printSettings(String server) {
         Printer.printSubTitle("\"" + server + "\" Settings");
         Printer.printItem("(1) Start RAM", startRam + "");
@@ -105,5 +126,7 @@ public class ServerSettings implements Serializable {
         Printer.printItem("(5) Max starting duration", maxStartingDuration + "");
         Printer.printItem("(6) Max stopping duration", maxStoppingDuration + "");
         Printer.printItem("(7) Stop command", stopCommand + "");
+        Printer.printItem("(8) Custom java arguments", customJavaArgs + "");
+        Printer.printItem("(9) Java path", javaPath + "");
     }
 }

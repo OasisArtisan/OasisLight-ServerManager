@@ -181,10 +181,10 @@ public final class Settings implements Serializable {
         commandSchedulerTaskInterval = 1800000;
         useConsoleColors = true;
         clearConsoleBeforeMenu = true;
-        logOutput = true;
+        logOutput = false;
         printBackgroundInfoToConsole = true;
         backgroundInfoTimeStampsInConsole = true;
-        storageType = "sqlite";
+        storageType = "json";
     }
 
     public void saveFromList(List<Object> ls) {

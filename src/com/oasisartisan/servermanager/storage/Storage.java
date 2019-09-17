@@ -117,10 +117,12 @@ public abstract class Storage {
 
     private static void initStorageTypes() {
         storages = new HashMap();
-        Storage st = new FlatStorage();
+        Storage st = new JSONStorage();
         storages.put(st.getType(), st);
-        st = new SQLiteStorage();
-        storages.put(st.getType(), st);
+//        st = new SQLiteStorage();
+//        storages.put(st.getType(), st);
+//        st = new FlatStorage();
+//        storages.put(st.getType(), st);
     }
 
     public static HashMap<String, Storage> getStorageTypes() {

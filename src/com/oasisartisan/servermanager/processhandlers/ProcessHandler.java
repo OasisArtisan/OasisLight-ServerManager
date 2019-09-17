@@ -33,6 +33,8 @@ public interface ProcessHandler {
     public String translateBackupOutputToProgress(String[] output);
     
     public boolean checkPrerequisites() throws InterruptedException;
+    
+    public boolean checkJavaPath(String javaPath);
 
     public void waitForKeyPress();
 

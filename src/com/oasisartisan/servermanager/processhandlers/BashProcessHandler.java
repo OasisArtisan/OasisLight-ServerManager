@@ -60,6 +60,18 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
             return null;
         }
     }
+    
+    @Override
+    public boolean checkJavaPath(String javaPath){
+        try {
+            List<String> cmds = new ArrayList();
+            cmds.add(javaPath);
+            exec(cmds);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
     @Override
     public boolean checkPrerequisites() throws InterruptedException{
@@ -142,12 +154,17 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
         cmd.add("screen");
         cmd.add("-dmS");
         cmd.add(server.getName());
-        cmd.add("java");
+        cmd.add(server.getSettings().getJavaPath());
         if (server.getSettings().getMaxRam() != null) {
             cmd.add("-Xmx" + server.getSettings().getMaxRam());
         }
         if (server.getSettings().getStartRam() != null) {
             cmd.add("-Xms" + server.getSettings().getStartRam());
+        }
+        if (server.getSettings().getCustomJavaArgs() != null) {
+            for(String option: server.getSettings().getCustomJavaArgs().split(" ")){
+                cmd.add(option);
+            }
         }
         cmd.add("-jar");
         cmd.add(server.getFile().getName());

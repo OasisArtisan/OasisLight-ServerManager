@@ -16,7 +16,6 @@ public class GlobalServerSettings extends ServerSettings {
                 s.getSettings().setStopCommand(stopCommand);
             }
         }
-
     }
 
     @Override
@@ -35,7 +34,6 @@ public class GlobalServerSettings extends ServerSettings {
                 s.getSettings().setMaxStoppingDuration(maxStoppingDuration);
             }
         }
-
     }
 
     @Override
@@ -45,7 +43,6 @@ public class GlobalServerSettings extends ServerSettings {
                 s.getSettings().setStartRam(startRam);
             }
         }
-
     }
 
     @Override
@@ -55,7 +52,6 @@ public class GlobalServerSettings extends ServerSettings {
                 s.getSettings().setMaxRam(maxRam);
             }
         }
-
     }
 
     @Override
@@ -65,7 +61,6 @@ public class GlobalServerSettings extends ServerSettings {
                 s.getSettings().setStartIfOffline(startIfOffline);
             }
         }
-
     }
 
     @Override
@@ -75,7 +70,24 @@ public class GlobalServerSettings extends ServerSettings {
                 s.getSettings().setRestartIfNotResponding(restartIfNotResponding);
             }
         }
-
+    }
+    
+    @Override
+    public void setCustomJavaArgs(String args){
+        synchronized (Storage.getServerList()) {
+            for (Server s : Storage.getServerList().values()) {
+                s.getSettings().setCustomJavaArgs(args);
+            }
+        }
+    }
+    
+    @Override
+    public void setJavaPath(String path){
+        synchronized (Storage.getServerList()) {
+            for (Server s : Storage.getServerList().values()) {
+                s.getSettings().setJavaPath(path);
+            }
+        }
     }
 
     @Override
@@ -84,8 +96,8 @@ public class GlobalServerSettings extends ServerSettings {
             Printer.printFailedReply("The program has no servers to display global settings.");
             return;
         }
-        String[] ls = new String[7];
-        boolean[] lsb = new boolean[7];
+        String[] ls = new String[9];
+        boolean[] lsb = new boolean[9];
         synchronized (Storage.getServerList()) {
             Server s = Storage.getServerList().values().iterator().next();
             ls[0] = s.getSettings().getStartRam() + "";
@@ -95,6 +107,8 @@ public class GlobalServerSettings extends ServerSettings {
             ls[4] = s.getSettings().getMaxStartingDuration() + "";
             ls[5] = s.getSettings().getMaxStoppingDuration() + "";
             ls[6] = s.getSettings().getStopCommand() + "";
+            ls[7] = s.getSettings().getCustomJavaArgs() + "";
+            ls[8] = s.getSettings().getJavaPath() + "";
             boolean skip = true;
             for (Server se : Storage.getServerList().values()) {
                 if (skip) {
@@ -122,7 +136,12 @@ public class GlobalServerSettings extends ServerSettings {
                 if (!lsb[6] && !ls[6].equals(se.getSettings().getStopCommand() + "")) {
                     lsb[6] = true;
                 }
-
+                if (!lsb[7] && !ls[7].equals(se.getSettings().getCustomJavaArgs()+ "")) {
+                    lsb[7] = true;
+                }
+                if (!lsb[8] && !ls[8].equals(se.getSettings().getJavaPath()+ "")) {
+                    lsb[8] = true;
+                }
             }
         }
         Printer.printSubTitle("\"" + server + "\" Settings");
@@ -133,5 +152,7 @@ public class GlobalServerSettings extends ServerSettings {
         Printer.printItem("(5) Max starting duration", (lsb[4] ? "Multiple Values" : ls[4]) + "");
         Printer.printItem("(6) Max stoping duration", (lsb[5] ? "Multiple Values" : ls[5]) + "");
         Printer.printItem("(7) Stop command", (lsb[6] ? "Multiple Values" : ls[6]) + "");
+        Printer.printItem("(8) Custom java arguments", (lsb[7] ? "Multiple Values" : ls[7]) + "");
+        Printer.printItem("(9) Java path", (lsb[8] ? "Multiple Values" : ls[8]) + "");
     }
 }
