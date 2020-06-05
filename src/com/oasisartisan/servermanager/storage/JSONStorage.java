@@ -79,6 +79,7 @@ public class JSONStorage extends Storage
             s.getSettings().setMaxRam(jss.get("maxRam") == JSONObject.NULL ? null : jss.getString("maxRam"));
             s.getSettings().setCustomJavaArgs(jss.get("customJavaArgs") == JSONObject.NULL ? null : jss.getString("customJavaArgs"));
             s.getSettings().setJavaPath(jss.getString("javaPath"));
+            s.getSettings().setCustomServerArgs(jss.has("customServerArgs") && jss.get("customJavaArgs") != JSONObject.NULL ? jss.getString("customServerArgs") : null);
             s.getSettings().setStartIfOffline(jss.getBoolean("startIfOffline"));
             s.getSettings().setRestartIfNotResponding(jss.getBoolean("restartIfNotResponding"));
             s.getSettings().setMaxStartingDuration(jss.getLong("maxStartingDuration"));
@@ -158,6 +159,7 @@ public class JSONStorage extends Storage
                 jsonServerSettings.put("maxRam", JSONObject.wrap(serverSettings.getMaxRam()));
                 jsonServerSettings.put("customJavaArgs", JSONObject.wrap(serverSettings.getCustomJavaArgs()));
                 jsonServerSettings.put("javaPath", serverSettings.getJavaPath());
+                jsonServerSettings.put("customServerArgs", JSONObject.wrap(serverSettings.getCustomServerArgs()));
                 jsonServerSettings.put("startIfOffline", serverSettings.isStartIfOffline());
                 jsonServerSettings.put("restartIfNotResponding", serverSettings.isRestartIfNotResponding());
                 jsonServerSettings.put("maxStartingDuration", serverSettings.getMaxStartingDuration());

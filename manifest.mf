@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Program-Name: Server Manager
-Program-Version: 1.1
+Program-Version: 1.2.1
 Supported-Platforms: Bash
 Description: This program is used to manage and monitor any java process. However small plugins or code snippets must be added to those processes to learn how to communicate with the program.
 Plugin-ServerManagerMonitor: Used for a Minecraft spigot server Made by Ben Burum. Download from ...

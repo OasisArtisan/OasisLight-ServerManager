@@ -34,7 +34,7 @@ public class Main {
     public static final String PROGRAM_NAME = "OasisLight-Server Manager";
     public static final String WIKI_LINK = "https://github.com/OasisArtisan/OasisLight-ServerManager/wiki";
 
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.2.1";
     private static ProcessHandler processHandler;
 
     private static ServerStateUpdaterTask serverStateUpdaterTask;
@@ -55,9 +55,9 @@ public class Main {
         MENUS.put("SETTINGS", SETTINGS);
         String[] SERVER = {"start", "stop", "kill", "restart", "send", "backup", "timedcommands", "settings", "info", "help", "back"};
         MENUS.put("SERVER", SERVER);
-        String[] SERVER_SETTINGS = {"rename", "path", "link", "unlink", "1-9", "info", "help", "back"};
+        String[] SERVER_SETTINGS = {"rename", "path", "link", "unlink", "1-10", "info", "help", "back"};
         MENUS.put("SERVER_SETTINGS", SERVER_SETTINGS);
-        String[] GLOBAL_SERVER_SETTINGS = {"link", "unlink", "1-9", "info", "help", "back"};
+        String[] GLOBAL_SERVER_SETTINGS = {"link", "unlink", "1-10", "info", "help", "back"};
         MENUS.put("GLOBAL_SERVER_SETTINGS", GLOBAL_SERVER_SETTINGS);
         String[] TIMED_COMMANDS = {"add", "remove", "list", "help", "back"};
         MENUS.put("TIMED_COMMANDS", TIMED_COMMANDS);
@@ -882,6 +882,21 @@ public class Main {
                         }
                         Printer.printFailedReply(pName, "\"" + input + "\" is not a valid java path");
                     }
+                    break;
+                case "10":
+                    Printer.printPrompt("Do not change this unless you know what you are doing!");
+                    Printer.printPrompt("Enter the new custom server arguments");
+                    input = in.nextLine();
+                    if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
+                        break;
+                    }
+                    if (input.equals("null")) {
+                        server.getSettings().setCustomServerArgs(null);
+                        Printer.printDataChange(pName, "Custom server arguments have been cleared.");
+                        break;
+                    }
+                    server.getSettings().setCustomServerArgs(input);
+                    Printer.printDataChange(pName, "Custom server arguments has been changed successfully to \"" + input + "\".");
                     break;
                 case "info":
                 case "i":

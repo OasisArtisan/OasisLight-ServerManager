@@ -14,6 +14,7 @@ public class ServerSettings implements Serializable {
     private String maxRam;
     private String customJavaArgs;
     private String javaPath;
+    private String customServerArgs;
 
     private boolean startIfOffline;
     private boolean restartIfNotResponding;
@@ -116,7 +117,15 @@ public class ServerSettings implements Serializable {
     public void setCustomJavaArgs(String customJavaArgs) {
         this.customJavaArgs = customJavaArgs;
     }
-    
+
+    public String getCustomServerArgs() {
+        return customServerArgs;
+    }
+
+    public void setCustomServerArgs(String customServerArgs) {
+        this.customServerArgs = customServerArgs;
+    }
+
     public void printSettings(String server) {
         Printer.printSubTitle("\"" + server + "\" Settings");
         Printer.printItem("(1) Start RAM", startRam + "");
@@ -128,5 +137,6 @@ public class ServerSettings implements Serializable {
         Printer.printItem("(7) Stop command", stopCommand + "");
         Printer.printItem("(8) Custom java arguments", customJavaArgs + "");
         Printer.printItem("(9) Java path", javaPath + "");
+        Printer.printItem("(10) Custom server arguments", customServerArgs + "");
     }
 }
