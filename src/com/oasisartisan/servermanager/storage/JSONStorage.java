@@ -79,7 +79,7 @@ public class JSONStorage extends Storage
             s.getSettings().setMaxRam(jss.get("maxRam") == JSONObject.NULL ? null : jss.getString("maxRam"));
             s.getSettings().setCustomJavaArgs(jss.get("customJavaArgs") == JSONObject.NULL ? null : jss.getString("customJavaArgs"));
             s.getSettings().setJavaPath(jss.getString("javaPath"));
-            s.getSettings().setCustomServerArgs(jss.get("customServerArgs") == JSONObject.NULL ? null : jss.getString("customServerArgs"));
+            s.getSettings().setCustomServerArgs(jss.has("customServerArgs") && jss.get("customJavaArgs") != JSONObject.NULL ? jss.getString("customServerArgs") : null);
             s.getSettings().setStartIfOffline(jss.getBoolean("startIfOffline"));
             s.getSettings().setRestartIfNotResponding(jss.getBoolean("restartIfNotResponding"));
             s.getSettings().setMaxStartingDuration(jss.getLong("maxStartingDuration"));
