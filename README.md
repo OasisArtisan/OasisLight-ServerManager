@@ -22,7 +22,7 @@ The Monitor showing servers linked to the SMMonitor spigot plugin.
 ### Starting the manager
 After downloading the jar simply run it with a basic java command specifying the maximum ram if prefered.
 ```
-java -Xmx5M -jar /.../.../OasisLight-ServerManager_1.1.jar
+java -Xmx5M -jar /.../.../OasisLight-ServerManager_1.2.1.jar
 ```
 If the manager fails to start, Make sure you the following prerequisites installed:
 - JAVA
