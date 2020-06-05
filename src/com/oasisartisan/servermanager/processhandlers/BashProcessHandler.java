@@ -168,8 +168,8 @@ public class BashProcessHandler implements ProcessHandler, Serializable {
         }
         cmd.add("-jar");
         cmd.add(server.getFile().getName());
-        if (server.getSettings().getCustomJarArgs() != null) {
-            for(String option: server.getSettings().getCustomJarArgs().split(" ")){
+        if (server.getSettings().getCustomServerArgs() != null) {
+            for(String option: server.getSettings().getCustomServerArgs().split(" ")){
                 cmd.add(option);
             }
         }

@@ -885,18 +885,18 @@ public class Main {
                     break;
                 case "10":
                     Printer.printPrompt("Do not change this unless you know what you are doing!");
-                    Printer.printPrompt("Enter the new custom jar arguments");
+                    Printer.printPrompt("Enter the new custom server arguments");
                     input = in.nextLine();
                     if (input.equalsIgnoreCase("back") || input.equalsIgnoreCase("b")) {
                         break;
                     }
                     if (input.equals("null")) {
-                        server.getSettings().setCustomJarArgs(null);
-                        Printer.printDataChange(pName, "Custom jar arguments have been cleared.");
+                        server.getSettings().setCustomServerArgs(null);
+                        Printer.printDataChange(pName, "Custom server arguments have been cleared.");
                         break;
                     }
-                    server.getSettings().setCustomJarArgs(input);
-                    Printer.printDataChange(pName, "Custom jar arguments has been changed successfully to \"" + input + "\".");
+                    server.getSettings().setCustomServerArgs(input);
+                    Printer.printDataChange(pName, "Custom server arguments has been changed successfully to \"" + input + "\".");
                     break;
                 case "info":
                 case "i":

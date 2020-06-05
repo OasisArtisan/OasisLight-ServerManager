@@ -91,10 +91,10 @@ public class GlobalServerSettings extends ServerSettings {
     }
 
     @Override
-    public void setCustomJarArgs(String args){
+    public void setCustomServerArgs(String args){
         synchronized (Storage.getServerList()) {
             for (Server s : Storage.getServerList().values()) {
-                s.getSettings().setCustomJarArgs(args);
+                s.getSettings().setCustomServerArgs(args);
             }
         }
     }
@@ -118,7 +118,7 @@ public class GlobalServerSettings extends ServerSettings {
             ls[6] = s.getSettings().getStopCommand() + "";
             ls[7] = s.getSettings().getCustomJavaArgs() + "";
             ls[8] = s.getSettings().getJavaPath() + "";
-            ls[9] = s.getSettings().getCustomJarArgs() + "";
+            ls[9] = s.getSettings().getCustomServerArgs() + "";
             boolean skip = true;
             for (Server se : Storage.getServerList().values()) {
                 if (skip) {
@@ -152,7 +152,7 @@ public class GlobalServerSettings extends ServerSettings {
                 if (!lsb[8] && !ls[8].equals(se.getSettings().getJavaPath()+ "")) {
                     lsb[8] = true;
                 }
-                if (!lsb[9] && !ls[9].equals(se.getSettings().getCustomJarArgs()+ "")) {
+                if (!lsb[9] && !ls[9].equals(se.getSettings().getCustomServerArgs()+ "")) {
                     lsb[9] = true;
                 }
             }
@@ -167,6 +167,6 @@ public class GlobalServerSettings extends ServerSettings {
         Printer.printItem("(7) Stop command", (lsb[6] ? "Multiple Values" : ls[6]) + "");
         Printer.printItem("(8) Custom java arguments", (lsb[7] ? "Multiple Values" : ls[7]) + "");
         Printer.printItem("(9) Java path", (lsb[8] ? "Multiple Values" : ls[8]) + "");
-        Printer.printItem("(10) Custom jar arguments", (lsb[9] ? "Multiple Values" : ls[9]) + "");
+        Printer.printItem("(10) Custom server arguments", (lsb[9] ? "Multiple Values" : ls[9]) + "");
     }
 }
